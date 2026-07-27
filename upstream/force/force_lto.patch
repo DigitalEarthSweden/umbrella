@@ -1,0 +1,43 @@
+diff --git a/Dockerfile b/Dockerfile
+index 9e67ae6..1de00dd 100755
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -75,7 +75,7 @@ COPY --link --chown=1000:1000 . .
+ # Build, install, check FORCE
+ RUN echo "building FORCE" && \
+   ./debug.sh $debug && \
+-  make -j$(nproc) $build
++  make LTO=yes -j$(nproc) $build
+ 
+ FROM internal_base AS force
+ 
+diff --git a/Makefile b/Makefile
+index 09b948f..3674f8b 100755
+--- a/Makefile
++++ b/Makefile
+@@ -27,10 +27,15 @@
+ # Installation directory
+ INSTALLDIR=/usr/local/bin
+ 
++# Link time optimization flags.
++ifeq ($(LTO),yes)
++  FLAGS_LTO = -flto
++endif
++
+ # Libraries
+ GDAL_INCLUDES = $(shell gdal-config --cflags)
+ GDAL_LIBS = $(shell gdal-config --libs)
+-GDAL_FLAGS = -Wl,-rpath=/usr/lib
++GDAL_FLAGS = $(FLAGS_LTO) -Wl,-rpath=/usr/lib
+ 
+ GSL_INCLUDES = $(shell gsl-config --cflags)
+ GSL_LIBS = $(shell gsl-config --libs)
+@@ -57,7 +62,7 @@ RSTATS_LIBS = $(shell R CMD config --ldflags | sed 's/ /\n/g' | grep '\-L') -lR
+ ### Compiler
+ 
+ # Compilation Flags
+-CFLAGS=-O3 -Wall -fopenmp
++CFLAGS=-O2 -Wall $(FLAGS_LTO) -fopenmp
+ #CFLAGS=-g -Wall -fopenmp
+ 
+ GCC=gcc $(CFLAGS)
