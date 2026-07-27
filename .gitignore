@@ -1,0 +1,12 @@
+# Various environmens and caches.
+.DS_Store
+__pycache__
+.coverage
+.idea
+.ipynb
+.null-ls-root
+.pytest_cache
+.python-version
+.ruff_cache
+.venv
+.vscode
