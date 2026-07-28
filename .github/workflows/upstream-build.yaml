@@ -59,6 +59,10 @@ jobs:
       - name: Build upstream images
         run: |
           set -o pipefail
+          # Unset empty commands for check in Makefile.
+          [ -n "$COSIGN_CMD" ] || unset COSIGN_CMD
+          [ -n "$PUSH_CMD" ] || unset PUSH_CMD
+          [ -n "$PUSH_OPTION" ] || unset PUSH_OPTION
           export BUILDKIT_PROGRESS=plain
           export Q=''
           export DOCKER_EXTRA_UPSTREAM_ARGS="--pull --no-cache"
