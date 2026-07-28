@@ -23,6 +23,7 @@ concurrency:
 jobs:
   main:
     name: upstream-build
+    if: github.ref == 'refs/heads/main'
     environment: upstream-build
     timeout-minutes: 300
     # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
