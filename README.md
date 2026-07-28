@@ -22,11 +22,16 @@ Add an environment `upstream-build` in `Settings->Environments`, and set
 the following environment variables:
 
 - `CI_REGISTRY`: name of CI registry to push images to, for example`ghcr.io`.
-- `CI_REGISTRY_UPSTREAM_BASE_PATH`: directory where images are pushed to, we use `$ORGANIZATION_NAME-upstream`
+- `CI_REGISTRY_BASE_PATH`: directory (~staging area) that `UPSTREAM_IMAGES` are transferred to, we use `$ORGANIZATION_NAME-images`
+- `CI_REGISTRY_READ_USER`: Username to pull `$CI_REGISTRY/$CI_REGISTRY_BASE_PATH/support-releaser`
+- `CI_REGISTRY_UPSTREAM_BASE_PATH`: directory where upstream images are pushed to, we use `$ORGANIZATION_NAME-upstream`
 - `ORGANIZATION_NAME`: images are named `$ORGANIZATION_NAME-$IMAGE_NAME`, so set this to the short name of your organization
+- `UPSTREAM_IMAGES`: space-separated list of upstream image names to be transferred to `$CI_REGISTRY_BASE_PATH` after being built
 
 Also configure the following secrets in the `upstream-build` environment:
 
+- `CI_REGISTRY_READ_USER_PASSWORD`: Password for `CI_REGISTRY_READ_USER`
+- `DOCKER_AUTH_CONFIG_RW`: This is a `DOCKER_AUTH_CONFIG` with credentials that are allowed to push to `$CI_REGISTRY/$CI_REGISTRY_BASE_PATH`
 - `DOCKER_AUTH_CONFIG_UPSTREAM_RW`: This is a `DOCKER_AUTH_CONFIG` with credentials that are allowed to push to `$CI_REGISTRY/$CI_REGISTRY_UPSTREAM_BASE_PATH`
 
 # Miscellaneous Information
