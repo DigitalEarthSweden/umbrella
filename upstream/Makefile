@@ -26,6 +26,41 @@ all: $(TARGETS)
 $(TARGETS): FORCE
 	$(Q)$(MAKE) -Orecurse -C $(dir $@) $(notdir $@)
 
+REGCTL_CMD = regctl
+REGCTL = $(REGCTL_CMD) $(REGCTL_PARAMS)
+
+# Authentication expected through DOCKER_AUTH_CONFIG, so list some tags to
+# detect authentication issues before doing anything important.
+registry-test-login:
+	$(Q)$(REGCTL_CMD) tag ls $(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/support-releaser -v error > /dev/null
+
+# Set this to something to avoid empty rule names.
+UPSTREAM_IMAGES ?= upstream-images-not-defined
+
+# Mangle : to get a valid rule name.
+DELIMIT := __@__
+UPSTREAM_IMAGES_TMP := $(subst :,$(DELIMIT),$(UPSTREAM_IMAGES))
+
+ifndef PIPELINE_TIME
+  # Lexically sortable, monotonically increasing.
+  PIPELINE_TIME := $(shell date  +"%Y%m%d%H%M%S")
+endif
+
+ifdef COMMIT_SHORT_SHA
+$(UPSTREAM_IMAGES_TMP): PROD_TAG = prod-$(PIPELINE_TIME)-$(COMMIT_SHORT_SHA)
+endif
+$(UPSTREAM_IMAGES_TMP):
+	$(eval _exlist := $(subst $(DELIMIT), ,$@))
+	$(eval IMAGE := $(firstword $(_exlist)))
+	$(eval TAG := $(lastword $(_exlist)))
+	$(Q)$(REGCTL) image copy --referrers $(CI_REGISTRY)/$(CI_REGISTRY_UPSTREAM_PATH)/$(IMAGE):$(TAG) $(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(IMAGE):$(PROD_TAG)
+	$(Q)$(REGCTL) image copy --referrers $(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(IMAGE):$(PROD_TAG) $(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(IMAGE):latest
+
+upstream-transfer: SHELL = /bin/bash
+upstream-transfer: registry-test-login
+	$(Q)[ "$(UPSTREAM_IMAGES)" != "upstream-images-not-defined" ] || (echo "UPSTREAM_IMAGES not defined" && exit 1)
+	$(Q)$(MAKE) $(UPSTREAM_IMAGES_TMP)
+
 # Rule to force rebuilds
 .PHONY: FORCE
 FORCE:

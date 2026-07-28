@@ -18,15 +18,35 @@ below.
 
 ## Building Patched Upstream Images
 
+The `container:` block in GitHub actions is evaluated before environments, so
+we need to define some variables on the repository level for the CI to get
+values instead of blanks for those variables. The remaining variables and
+secrets are defined in an environment to keep them separated from each other.
+
+### Repository Variables and Secrets
+
+Add these repository variables:
+
+- `CI_REGISTRY`: name of CI registry to push images to, for example`ghcr.io`.
+- `CI_REGISTRY_BASE_PATH`: directory (~staging area) that `UPSTREAM_IMAGES` are transferred to, we use `$ORGANIZATION_NAME-images`
+- `CI_REGISTRY_READ_USER`: Username to pull `$CI_REGISTRY/$CI_REGISTRY_BASE_PATH/support-releaser`
+
+and these repository secrets:
+
+- `CI_REGISTRY_READ_USER_PASSWORD`: Password for `CI_REGISTRY_READ_USER`
+
+### Environment Variables and Secrets
+
 Add an environment `upstream-build` in `Settings->Environments`, and set
 the following environment variables:
 
-- `CI_REGISTRY`: name of CI registry to push images to, for example`ghcr.io`.
-- `CI_REGISTRY_UPSTREAM_BASE_PATH`: directory where images are pushed to, we use `$ORGANIZATION_NAME-upstream`
+- `CI_REGISTRY_UPSTREAM_BASE_PATH`: directory where upstream images are pushed to, we use `$ORGANIZATION_NAME-upstream`
 - `ORGANIZATION_NAME`: images are named `$ORGANIZATION_NAME-$IMAGE_NAME`, so set this to the short name of your organization
+- `UPSTREAM_IMAGES`: space-separated list of upstream image names to be transferred to `$CI_REGISTRY_BASE_PATH` after being built
 
 Also configure the following secrets in the `upstream-build` environment:
 
+- `DOCKER_AUTH_CONFIG_RW`: This is a `DOCKER_AUTH_CONFIG` with credentials that are allowed to push to `$CI_REGISTRY/$CI_REGISTRY_BASE_PATH`
 - `DOCKER_AUTH_CONFIG_UPSTREAM_RW`: This is a `DOCKER_AUTH_CONFIG` with credentials that are allowed to push to `$CI_REGISTRY/$CI_REGISTRY_UPSTREAM_BASE_PATH`
 
 # Miscellaneous Information
