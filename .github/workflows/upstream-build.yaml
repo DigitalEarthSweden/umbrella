@@ -76,9 +76,7 @@ jobs:
 
   upstream-transfer:
     name: upstream-transfer
-    environment:
-      name: upstream-build
-      deployment: false
+    environment: upstream-build
     timeout-minutes: 10
     # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
     runs-on: ubuntu-26.04
