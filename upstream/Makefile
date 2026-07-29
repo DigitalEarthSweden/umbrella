@@ -41,12 +41,12 @@ UPSTREAM_IMAGES ?= upstream-images-not-defined
 DELIMIT := __@__
 UPSTREAM_IMAGES_TMP := $(subst :,$(DELIMIT),$(UPSTREAM_IMAGES))
 
+ifdef COMMIT_SHORT_SHA
 ifndef PIPELINE_TIME
   # Lexically sortable, monotonically increasing.
-  PIPELINE_TIME := $(shell date  +"%Y%m%d%H%M%S")
+  PIPELINE_TIME := $(shell date +"%Y%m%d%H%M%S")
 endif
 
-ifdef COMMIT_SHORT_SHA
 $(UPSTREAM_IMAGES_TMP): PROD_TAG = prod-$(PIPELINE_TIME)-$(COMMIT_SHORT_SHA)
 endif
 $(UPSTREAM_IMAGES_TMP):
