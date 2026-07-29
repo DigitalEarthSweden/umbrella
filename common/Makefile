@@ -44,7 +44,7 @@ COSIGN_CMD ?= true
 
 sign-image:
 	$(eval DIGEST := $(shell docker inspect $(IMAGE_VAR):$(IMAGE_REV) | jq -r '.[].Id'))
-	$(Q)$(COSIGN_CMD) sign --yes $(IMAGE_VAR):$(IMAGE_REV)@$(DIGEST)
+	$(Q)$(COSIGN_CMD) sign --yes --recursive $(IMAGE_VAR):$(IMAGE_REV)@$(DIGEST)
 
 # Builds an upstream image. Will push image if make is invoked with:
 # make PUSH_OPTION="--push" ..
