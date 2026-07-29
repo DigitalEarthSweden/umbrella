@@ -80,6 +80,9 @@ jobs:
           PUSH_OPTION: ${{ env.PUSH_OPTION }}
           SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
 
+  # This job requires secrets from the repository, and those aren't exposed
+  # in pull requests from forks. Testing changes to this job in a pull request
+  # needs to be done from a branch of the repository itself.
   upstream-transfer:
     name: upstream-transfer
     if: github.ref == 'refs/heads/main'
