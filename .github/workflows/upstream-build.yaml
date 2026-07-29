@@ -97,7 +97,8 @@ jobs:
     # Variables/secrets in the container block are evaluated before the environment
     # variables, so these variables need to be defined at the repository level.
     container:
-      image: ${{ vars.CI_REGISTRY }}/${{ vars.CI_REGISTRY_BASE_PATH }}/support-releaser:latest
+      # FIXME: use releases for version when we have that up and running on GitHub.
+      image: ${{ vars.CI_REGISTRY }}/${{ vars.CI_REGISTRY_BASE_PATH }}/support-releaser:latest # zizmor: ignore[unpinned-images]
       credentials:
         username: ${{ vars.CI_REGISTRY_READ_USER }}
         password: ${{ secrets.CI_REGISTRY_READ_USER_PASSWORD }}
