@@ -1,0 +1,20 @@
+{
+  "name": "chl_nn",
+  "title": "CHL NN",
+  "abstract": "Chlorophyll-a concentration, computed using Neural Network",
+  "dynamic": true,
+  "product_name": "s3_olci_l2wfr",
+  "time_resolution": "solar",
+  "bands": {
+    "chl_nn": ["chl_nn"]
+  },
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [300, 300],
+  "styling": {
+    "include": "/config/styles/sentinel3/chl_nn.json",
+    "type": "json"
+  }
+}

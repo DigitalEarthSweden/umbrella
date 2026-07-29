@@ -46,12 +46,20 @@ sign-image:
 	$(eval DIGEST := $(shell docker inspect $(IMAGE_VAR):$(IMAGE_REV) | jq -r '.[].Id'))
 	$(Q)$(COSIGN_CMD) sign --yes --recursive $(IMAGE_VAR):$(IMAGE_REV)@$(DIGEST)
 
+ifdef LOCAL_IMAGE
+ifndef PIPELINE_TIME
+  # Lexically sortable, monotonically increasing.
+  PIPELINE_TIME := $(shell date +"%Y%m%d%H%M%S")
+endif
+
 # Builds an upstream image. Will push image if make is invoked with:
 # make PUSH_OPTION="--push" ..
+build-upstream-image: IMAGE_REV = prod-$(PIPELINE_TIME)-$(COMMIT_SHORT_SHA)
+endif
 build-upstream-image: IMAGE_VAR ?= $(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-$(IMAGE_BASE_NAME)
 build-upstream-image:
 	$(Q)cd $(IMAGE_BUILD_DIR) && \
-          docker build $(PUSH_OPTION) $(DOCKER_ARGS) $(DOCKER_EXTRA_UPSTREAM_ARGS) $(DOCKER_PROVENANCE_FLAGS) --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $(IMAGE_VAR):$(IMAGE_REV) --tag $(IMAGE_VAR):$(IMAGE_REV) --file $(DOCKERFILE) .
+          docker build $(PUSH_OPTION) $(DOCKER_ARGS) $(DOCKER_EXTRA_UPSTREAM_ARGS) $(DOCKER_PROVENANCE_FLAGS) $(addprefix --tag ,$(DOCKER_TAGS)) --build-arg BUILDKIT_INLINE_CACHE=1 --cache-from $(IMAGE_VAR):$(IMAGE_REV) $(addprefix --cache-from ,$(DOCKER_TAGS)) --tag $(IMAGE_VAR):$(IMAGE_REV) --file $(DOCKERFILE) .
 	$(Q)$(MAKE) IMAGE_VAR=$(IMAGE_VAR) IMAGE_REV=$(IMAGE_REV) sign-image
 
 PUSH_CMD ?= true

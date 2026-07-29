@@ -1,0 +1,20 @@
+{
+  "name": "tsm_nn",
+  "title": "TSM NN",
+  "abstract": "Total suspended matter concentration.",
+  "dynamic": true,
+  "product_name": "s3_olci_l2wfr",
+  "time_resolution": "solar",
+  "bands": {
+    "tsm_nn": ["tsm_nn"]
+  },
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [300, 300],
+  "styling": {
+    "include": "/config/styles/sentinel3/tsm_nn.json",
+    "type": "json"
+  }
+}

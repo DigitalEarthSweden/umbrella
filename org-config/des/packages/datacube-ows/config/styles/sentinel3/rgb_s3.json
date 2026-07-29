@@ -1,0 +1,22 @@
+{
+  "default_style": "rgb_s3",
+  "styles": [
+    {
+      "name": "rgb_s3",
+      "title": "RGB Sentinel-3",
+      "abstract": "RGB Sentinel-3",
+      "components": {
+        "red": {
+          "oa08": 1.0
+        },
+        "green": {
+          "oa06": 1.0
+        },
+        "blue": {
+          "oa04": 1.0
+        }
+      },
+      "scale_range": [0, 0.02]
+    }
+  ]
+}

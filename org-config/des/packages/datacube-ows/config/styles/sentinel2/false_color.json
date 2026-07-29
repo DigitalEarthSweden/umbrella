@@ -1,0 +1,22 @@
+{
+  "default_style": "false_color",
+  "styles": [
+    {
+      "name": "false_color",
+      "title": "False Color - B8 B4 B3",
+      "abstract": "False Color - NIR, Red, Green",
+      "components": {
+        "red": {
+          "nir": 1.0
+        },
+        "green": {
+          "red": 1.0
+        },
+        "blue": {
+          "green": 1.0
+        }
+      },
+      "scale_range": [1000, 3000]
+    }
+  ]
+}

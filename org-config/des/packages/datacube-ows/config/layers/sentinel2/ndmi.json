@@ -1,0 +1,21 @@
+{
+  "name": "Moisture",
+  "title": "NDMI",
+  "abstract": "NDMI (Normalized Difference Moisture Index) (B8A-B11)/(B8A+B11)",
+  "dynamic": true,
+  "product_name": "s2_msi_l2a",
+  "time_resolution": "solar",
+  "bands": {
+    "nir08": ["b08a"],
+    "swir16": ["b11"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [20, 20],
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "styling": {
+    "include": "/config/styles/sentinel2/ndmi.json",
+    "type": "json"
+  }
+}

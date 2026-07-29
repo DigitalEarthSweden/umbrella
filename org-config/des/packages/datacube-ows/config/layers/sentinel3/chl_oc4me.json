@@ -1,0 +1,20 @@
+{
+  "name": "chl_oc4me",
+  "title": "CHL OC4ME",
+  "abstract": "Chlorophyll-a concentration, computed using 'OC4Me'",
+  "dynamic": true,
+  "product_name": "s3_olci_l2wfr",
+  "time_resolution": "solar",
+  "bands": {
+    "chl_oc4me": ["chl_oc4me"]
+  },
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [300, 300],
+  "styling": {
+    "include": "/config/styles/sentinel3/chl_oc4me.json",
+    "type": "json"
+  }
+}

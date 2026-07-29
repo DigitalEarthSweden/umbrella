@@ -1,0 +1,72 @@
+{
+  "name": "des_s2_msi_l2a",
+  "title": "DES Sentinel-2 MSI L2A",
+  "abstract": "Sentinel-2 L2A product timeseries in SWEREF 99 projection",
+  "product_name": "des_s2_msi_l2a",
+  "time_resolution": "solar",
+  "bands": {
+    "BLUE": ["B02"],
+    "GREEN": ["B03"],
+    "RED": ["B04"],
+    "BROADNIR": ["B08"],
+    "NIR": ["B08A"],
+    "SWIR1": ["B11"],
+    "SWIR2": ["B12"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [10, 10],
+  "image_processing": {
+    "extent_mask_func": "datacube_ows.ogc_utils.mask_by_val",
+    "always_fetch_bands": []
+  },
+  "styling": {
+    "styles": [
+      {
+        "name": "rgb",
+        "title": "Simple RGB",
+        "abstract": "True Color image using B04 (Red), B03 (Green), and B02 (Blue).",
+        "components": {
+          "red": { "RED": 1.0 },
+          "green": { "GREEN": 1.0 },
+          "blue": { "BLUE": 1.0 }
+        },
+        "scale_range": [0, 2000]
+      },
+      {
+        "name": "false_color",
+        "title": "False Color (NIR, Red, Green)",
+        "abstract": "False Color composite using B08 (NIR), B04 (Red), and B03 (Green).",
+        "components": {
+          "red": { "NIR": 1.0 },
+          "green": { "RED": 1.0 },
+          "blue": { "GREEN": 1.0 }
+        },
+        "scale_range": [0, 2000]
+      },
+      {
+        "name": "ndvi",
+        "title": "NDVI",
+        "abstract": "Normalized Difference Vegetation Index calculated as (NIR - Red) / (NIR + Red).",
+        "index_function": {
+          "function": "datacube_ows.band_utils.pre_scaled_norm_diff",
+          "mapped_bands": true,
+          "kwargs": {
+            "band1": "NIR",
+            "band2": "RED",
+            "scale1": 1,
+            "offset1": 0,
+            "scale2": 1,
+            "offset2": 0
+          }
+        },
+        "needed_bands": ["NIR", "RED"],
+        "color_ramp": [
+          { "value": 0.0, "color": "#250a00" },
+          { "value": 0.5, "color": "#a2c000" },
+          { "value": 1.0, "color": "#003500" }
+        ],
+        "legend": { "title": "NDVI" }
+      }
+    ]
+  }
+}

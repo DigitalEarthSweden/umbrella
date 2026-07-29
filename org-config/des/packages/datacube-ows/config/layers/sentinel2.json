@@ -1,0 +1,19 @@
+{
+  "title": "Sentinel-2 MSI Level-2A",
+  "abstract": "Sentinel-2 MSI Level-2A",
+  "keywords": [],
+  "layers": [
+    {
+      "include": "/config/layers/sentinel2/dropdown_styles.json",
+      "type": "json"
+    },
+    {
+      "include": "/config/layers/sentinel2/dropdown_styles_pre2022.json",
+      "type": "json"
+    },
+    {
+      "include": "/config/layers/sentinel2/scl_style.json",
+      "type": "json"
+    }
+  ]
+}

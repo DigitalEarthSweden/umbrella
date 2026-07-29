@@ -1,0 +1,36 @@
+name: datacube-explorer
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  pull_request:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build-packages-datacube-explorer.yaml"
+      - ".github/workflows/docker-build.yaml"
+      - "common/Makefile"
+      - "org-config/*/packages/datacube-explorer"
+      - "packages/datacube-explorer"
+  workflow_dispatch:
+
+permissions: {}
+
+# When a PR is updated, cancel the jobs from the previous version. Merges
+# do not define head_ref, so use run_id to never cancel those jobs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  datacube-explorer:
+    name: datacube-explorer
+    permissions:
+      id-token: write # This is required for cosign
+    uses: ./.github/workflows/docker-build.yaml
+    with:
+      build-path: packages/datacube-explorer
+      timeout: 15
+    secrets:
+      docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_RW }}

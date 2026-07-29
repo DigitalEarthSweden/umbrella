@@ -1,0 +1,50 @@
+{
+  "global": {
+    "title": "Digital Earth Sweden",
+    "info_url": "https://digitalearth.se",
+    "services": {
+      "wms": true,
+      "wmts": true,
+      "wcs": false
+    },
+    "response_headers": {
+      "Access-Control-Allow-Origin": "*"
+    },
+    "load_driver": "rio",
+    "allowed_urls": ["https://ows.digitalearth.se"],
+    "published_CRSs": {
+      "EPSG:4326": {
+        "geographic": true,
+        "vertical_coord_first": true
+      },
+      "EPSG:3857": {
+        "geographic": false,
+        "horizontal_coord": "x",
+        "vertical_coord": "y"
+      },
+      "EPSG:3006": {
+        "geographic": false,
+        "horizontal_coord": "x",
+        "vertical_coord": "y",
+        "vertical_coord_first": true
+      }
+    }
+  },
+  "wms": {
+    "max_height": 512,
+    "max_width": 512,
+    "s3_url": "",
+    "s3_bucket": "",
+    "s3_aws_zone": ""
+  },
+  "layers": [
+    {
+      "include": "/config/layers/des_s2_msi_l2a.json",
+      "type": "json"
+    },
+    {
+      "include": "/config/layers/sentinel2.json",
+      "type": "json"
+    }
+  ]
+}

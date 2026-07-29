@@ -1,0 +1,20 @@
+{
+  "default_style": "CHL_OC4ME",
+  "styles": [
+    {
+      "name": "CHL_OC4ME",
+      "title": "CHL OC4ME",
+      "abstract": "Chlorophyll-a concentration, computed using 'OC4Me'",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "chl_oc4me"
+        }
+      },
+      "needed_bands": ["chl_oc4me"],
+      "mpl_ramp": "jet",
+      "range": [-2.0, 2.0]
+    }
+  ]
+}

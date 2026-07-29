@@ -1,0 +1,22 @@
+{
+  "name": "rgb_s3",
+  "title": "RGB Sentinel-3",
+  "abstract": "RGB Sentinel-3",
+  "dynamic": true,
+  "product_name": "s3_olci_l2wfr",
+  "time_resolution": "solar",
+  "bands": {
+    "oa08": ["oa08"],
+    "oa06": ["oa06"],
+    "oa04": ["oa04"]
+  },
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [300, 300],
+  "styling": {
+    "include": "/config/styles/sentinel3/rgb_s3.json",
+    "type": "json"
+  }
+}

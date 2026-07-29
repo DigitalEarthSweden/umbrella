@@ -1,0 +1,20 @@
+{
+  "default_style": "wqsf_lsb",
+  "styles": [
+    {
+      "name": "wqsf_lsb",
+      "title": "WQSF",
+      "abstract": "Water Quality and Science Flags",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "wqsf_lsb"
+        }
+      },
+      "needed_bands": ["wqsf_lsb"],
+      "mpl_ramp": "jet",
+      "range": [0.0, 268435456]
+    }
+  ]
+}

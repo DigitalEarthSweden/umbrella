@@ -1,0 +1,24 @@
+{
+  "default_style": "NDWI",
+  "styles": [
+    {
+      "name": "NDWI",
+      "title": "NDWI",
+      "abstract": "NDMI (Normalized Difference Moisture Index) (B8A-B11)/(B8A+B11)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "green",
+          "band2": "nir"
+        }
+      },
+      "needed_bands": ["green", "nir"],
+      "color_ramp": [
+        { "value": -0.5, "color": "#008000" },
+        { "value": 0.0, "color": "#FFFFFF" },
+        { "value": 0.0, "color": "#0000CC" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "styles": [
+    {
+      "name": "false_color_urban",
+      "title": "False Color Urban",
+      "abstract": "False Color Urban",
+      "components": {
+        "red": {
+          "swir22": 1.0
+        },
+        "green": {
+          "swir16": 1.0
+        },
+        "blue": {
+          "red": 1.0
+        }
+      },
+      "scale_range": [1000, 3000]
+    }
+  ]
+}

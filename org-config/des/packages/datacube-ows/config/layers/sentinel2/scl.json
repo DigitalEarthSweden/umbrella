@@ -1,0 +1,20 @@
+{
+  "name": "SCL",
+  "title": "Scene classification",
+  "abstract": "Sentinel-2 scene classification",
+  "dynamic": true,
+  "product_name": "s2_msi_l2a",
+  "time_resolution": "solar",
+  "bands": {
+    "scl": ["scl"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [20, 20],
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "styling": {
+    "include": "/config/styles/sentinel2/scl.json",
+    "type": "json"
+  }
+}

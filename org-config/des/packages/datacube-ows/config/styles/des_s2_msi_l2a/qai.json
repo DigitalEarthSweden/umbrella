@@ -1,0 +1,184 @@
+{
+  "styles": [
+    {
+      "name": "snow",
+      "title": "Snow Flag",
+      "abstract": "Visualizes areas marked as snow in the QAI band.",
+      "needed_bands": ["qai"],
+      "pq_masks": [
+        {
+          "flags": {
+            "snow": true
+          },
+          "color": "#ffffff",
+          "title": "Snow"
+        },
+        {
+          "flags": {
+            "snow": false
+          },
+          "color": "#000000",
+          "title": "No Snow"
+        }
+      ],
+      "legend": {
+        "styles": [
+          {
+            "color": "#ffffff",
+            "title": "Snow"
+          },
+          {
+            "color": "#000000",
+            "title": "No Snow"
+          }
+        ]
+      }
+    },
+    {
+      "name": "cloud_state",
+      "title": "Cloud State",
+      "abstract": "Visualizes cloud state information from the QAI band.",
+      "needed_bands": ["qai"],
+      "pq_masks": [
+        {
+          "flags": {
+            "cloud_state": "clear"
+          },
+          "color": "#87ceeb",
+          "title": "Clear"
+        },
+        {
+          "flags": {
+            "cloud_state": "less_confident_cloud"
+          },
+          "color": "#ffa500",
+          "title": "Less Confident Cloud"
+        },
+        {
+          "flags": {
+            "cloud_state": "confident_cloud"
+          },
+          "color": "#808080",
+          "title": "Confident Cloud"
+        },
+        {
+          "flags": {
+            "cloud_state": "cirrus"
+          },
+          "color": "#d8bfd8",
+          "title": "Cirrus"
+        }
+      ],
+      "legend": {
+        "styles": [
+          {
+            "color": "#87ceeb",
+            "title": "Clear"
+          },
+          {
+            "color": "#ffa500",
+            "title": "Less Confident Cloud"
+          },
+          {
+            "color": "#808080",
+            "title": "Confident Cloud"
+          },
+          {
+            "color": "#d8bfd8",
+            "title": "Cirrus"
+          }
+        ]
+      }
+    },
+    {
+      "name": "water",
+      "title": "Water Flag",
+      "abstract": "Visualizes water presence from the QAI band.",
+      "needed_bands": ["qai"],
+      "pq_masks": [
+        {
+          "flags": {
+            "water": true
+          },
+          "color": "#0000ff",
+          "title": "Water"
+        },
+        {
+          "flags": {
+            "water": false
+          },
+          "color": "#d3d3d3",
+          "title": "No Water"
+        }
+      ],
+      "legend": {
+        "styles": [
+          {
+            "color": "#0000ff",
+            "title": "Water"
+          },
+          {
+            "color": "#d3d3d3",
+            "title": "No Water"
+          }
+        ]
+      }
+    },
+    {
+      "name": "composite",
+      "title": "QAI Composite",
+      "abstract": "Composite visualization combining Snow, Water, and Cloud State flags.",
+      "needed_bands": ["qai"],
+      "pq_masks": [
+        {
+          "flags": {
+            "snow": true
+          },
+          "color": "#ffffff",
+          "title": "Snow"
+        },
+        {
+          "flags": {
+            "water": true
+          },
+          "color": "#0000ff",
+          "title": "Water"
+        },
+        {
+          "flags": {
+            "cloud_state": "confident_cloud"
+          },
+          "color": "#808080",
+          "title": "Confident Cloud"
+        },
+        {
+          "flags": {
+            "cloud_state": "clear"
+          },
+          "color": "#87ceeb",
+          "title": "Clear"
+        }
+      ],
+      "legend": {
+        "styles": [
+          {
+            "color": "#ffffff",
+            "title": "Snow"
+          },
+          {
+            "color": "#0000ff",
+            "title": "Water"
+          },
+          {
+            "color": "#808080",
+            "title": "Confident Cloud"
+          },
+          {
+            "color": "#87ceeb",
+            "title": "Clear"
+          }
+        ]
+      }
+    }
+  ]
+}
