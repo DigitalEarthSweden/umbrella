@@ -1,0 +1,30 @@
+{
+  "styles": [
+    {
+      "name": "ndsi",
+      "title": "NDSI (B03 - B011) / (B03 + B11)",
+      "abstract": "NDSI - Normalized difference snow index",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "green",
+          "band2": "swir16"
+        }
+      },
+      "needed_bands": ["swir16", "green"],
+      "color_ramp": [
+        {
+          "value": 0.41,
+          "color": "#11ccff",
+          "alpha": 0.0
+        },
+        {
+          "value": 0.42,
+          "color": "#00ccff",
+          "alpha": 1.0
+        }
+      ]
+    }
+  ]
+}

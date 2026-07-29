@@ -1,0 +1,29 @@
+diff --git a/datacube_ows/loading.py b/datacube_ows/loading.py
+index 697002b9..0b580fc3 100644
+--- a/datacube_ows/loading.py
++++ b/datacube_ows/loading.py
+@@ -330,6 +330,7 @@ class DataStacker:
+                     )
+                 )
+             except Exception as e:
++                _LOG.exception(e)
+                 _LOG.error(
+                     "Error (%s) in DataStacker.data(): %s", e.__class__.__name__, str(e)
+                 )
+diff --git a/datacube_ows/startup_utils/__init__.py b/datacube_ows/startup_utils/__init__.py
+index 1623f573..86df23a5 100644
+--- a/datacube_ows/startup_utils/__init__.py
++++ b/datacube_ows/startup_utils/__init__.py
+@@ -179,7 +179,12 @@ def initialise_babel(cfg, app: Flask) -> object | None:
+ 
+ 
+ def create_app() -> Flask:
++    import warnings
++
+     log = initialise_logger()
++
++    warnings.filterwarnings("error")
++
+     app = initialise_flask(__name__)
+     cfg = parse_config_file(log)
+     initialise_ignorable_warnings()

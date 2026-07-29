@@ -1,0 +1,30 @@
+{
+  "name": "sentinel_3_menu",
+  "title": "Sentinel-3 OLCI",
+  "abstract": "Sentinel-3<br>This is level-2 OLCI data which has been processed by EUMETSAT. More information can be found here: <a href='https://sentinel.esa.int/sv/web/sentinel/missions/sentinel-3/data-products/olci'> Sentinel-3 - Data Products </a> and <a href='https://eumetsatspace.atlassian.net/wiki/spaces/SEN3/pages/1597767909/OLCI+products+level-2'>EUMETSAT OLCI products level-2</a>",
+  "dynamic": true,
+  "product_name": "s3_olci_l2wfr",
+  "time_resolution": "solar",
+  "bands": {
+    "chl_oc4me": ["chl_oc4me"],
+    "chl_nn": ["chl_nn"],
+    "tsm_nn": ["tsm_nn"],
+    "oa08": ["oa08"],
+    "oa06": ["oa06"],
+    "oa04": ["oa04"],
+    "wqsf_lsb": ["wqsf_lsb"],
+    "adg443_nn": ["adg443_nn"],
+    "par": ["par"],
+    "t865": ["t865"],
+    "iwv": ["iwv"]
+  },
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [300, 300],
+  "styling": {
+    "include": "/config/styles/sentinel3/s3_dropdown.json",
+    "type": "json"
+  }
+}

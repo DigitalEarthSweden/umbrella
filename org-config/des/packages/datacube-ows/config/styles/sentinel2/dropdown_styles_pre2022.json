@@ -1,0 +1,242 @@
+{
+  "styles": [
+    {
+      "name": "rgb",
+      "title": "Simple RGB",
+      "abstract": "RGB True Color - B4, B3, B2",
+      "components": {
+        "red": {
+          "red": 1.0
+        },
+        "green": {
+          "green": 1.0
+        },
+        "blue": {
+          "blue": 1.0
+        }
+      },
+      "scale_range": [0, 2000]
+    },
+    {
+      "name": "false_color",
+      "title": "False Color - NIR, Red, Green",
+      "abstract": "False Color - B08, B04, B03",
+      "components": {
+        "red": {
+          "nir": 1.0,
+          "scale_range": [0, 4000]
+        },
+        "green": {
+          "red": 1.0,
+          "scale_range": [0, 2000]
+        },
+        "blue": {
+          "green": 1.0,
+          "scale_range": [0, 2000]
+        }
+      }
+    },
+    {
+      "name": "false_color_urban",
+      "title": "False Color Urban - SWIR22, SWIR16, Red",
+      "abstract": "False Color Urban - B12, B11, B4",
+      "components": {
+        "red": {
+          "swir22": 1.0,
+          "scale_range": [0, 3000]
+        },
+        "green": {
+          "swir16": 1.0,
+          "scale_range": [0, 3000]
+        },
+        "blue": {
+          "red": 1.0,
+          "scale_range": [0, 2000]
+        }
+      }
+    },
+    {
+      "name": "swir",
+      "title": "False Color - SWIR22, Narrow NIR, Blue",
+      "abstract": "Short wave infrared. SWIR - B12, B8a, B4",
+      "components": {
+        "red": {
+          "swir22": 1.0
+        },
+        "green": {
+          "nir08": 1.0
+        },
+        "blue": {
+          "blue": 1.0
+        }
+      },
+      "scale_range": [0, 5000]
+    },
+    {
+      "name": "ndvi",
+      "title": "Normalized Difference Vegetation Index - NIR, Red",
+      "abstract": "NDVI (Normalized difference vegetation index) - (B8-B4)/(B8+B4)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "nir",
+          "band2": "red"
+        }
+      },
+      "needed_bands": ["red", "nir"],
+      "color_ramp": [
+        { "value": 0.0, "color": "#250a00" },
+        { "value": 0.2, "color": "#9f512a" },
+        { "value": 0.3, "color": "#b39312" },
+        { "value": 0.4, "color": "#f5d13f" },
+        { "value": 0.5, "color": "#f5ec3f" },
+        { "value": 0.6, "color": "#a2c000" },
+        { "value": 0.7, "color": "#8bb000" },
+        { "value": 0.8, "color": "#5e8e00" },
+        { "value": 0.9, "color": "#1c6800" },
+        { "value": 0.95, "color": "#003500" },
+        { "value": 1.0, "color": "#003500" }
+      ],
+      "legend": {
+        "title": "NDVI"
+      },
+      "pq_masks": [
+        {
+          "band": "scl",
+          "values": [6, 8, 9, 10],
+          "invert": true
+        }
+      ]
+    },
+    {
+      "name": "ndmi",
+      "title": "Normalized Difference Moisture Index - Narrow NIR, SWIR16",
+      "abstract": "NDMI (Normalized Difference Moisture Index) (B8A-B11)/(B8A+B11)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "nir08",
+          "band2": "swir16"
+        }
+      },
+      "needed_bands": ["swir16", "nir08"],
+      "color_ramp": [
+        { "value": -0.4, "color": "#800000" },
+        { "value": -0.2, "color": "#ff0000" },
+        { "value": 0.0, "color": "#ffff00" },
+        { "value": 0.2, "color": "#00ffff" },
+        { "value": 0.4, "color": "#3333ff" },
+        { "value": 0.6, "color": "#0000ff" },
+        { "value": 0.8, "color": "#00007a" }
+      ],
+      "legend": {
+        "title": "NDMI"
+      },
+      "pq_masks": [
+        {
+          "band": "scl",
+          "values": [6, 8, 9, 10],
+          "invert": true
+        }
+      ]
+    },
+    {
+      "name": "ndwi",
+      "title": "Normalized Difference Water Index - Green, NIR",
+      "abstract": "NDWI (Normalized Difference Water Index) - (B03 - B08) / (B03 + B08)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.pre_scaled_norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "green",
+          "band2": "nir"
+        }
+      },
+      "needed_bands": ["nir", "green"],
+      "color_ramp": [
+        { "value": -0.1, "color": "#f7fbff", "alpha": 0.0 },
+        { "value": 0.1, "color": "#bdd9f2" },
+        { "value": 0.4, "color": "#a5c1d2" },
+        { "value": 0.6, "color": "#8cb9cc" },
+        { "value": 0.8, "color": "#96b1c1" }
+      ],
+      "legend": {
+        "show_legend": false
+      },
+      "pq_masks": [
+        {
+          "band": "scl",
+          "values": [4, 8, 9, 10],
+          "invert": true
+        }
+      ]
+    },
+    {
+      "name": "nbi",
+      "title": "Normalized Difference Burn Index - NIR, SWIR22",
+      "abstract": "Normalized burn index (NBI) (B08 - B12) / (B08 + B12)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "nir",
+          "band2": "swir22"
+        }
+      },
+      "needed_bands": ["swir22", "nir"],
+      "color_ramp": [
+        { "value": -0.5, "color": "#000000" },
+        { "value": -0.3, "color": "#5c5d5c" },
+        { "value": -0.2, "color": "#a3a3a3" },
+        { "value": -0.1, "color": "#d3d3d3" },
+        { "value": 0.05, "color": "#ff0000" },
+        { "value": 0.25, "color": "#d4f456" },
+        { "value": 0.35, "color": "#62e118" },
+        { "value": 0.45, "color": "#48c522" },
+        { "value": 0.7, "color": "#00970a" }
+      ],
+      "legend": {
+        "title": "NBI"
+      },
+      "pq_masks": [
+        {
+          "band": "scl",
+          "values": [6, 8, 9, 10],
+          "invert": true
+        }
+      ]
+    },
+    {
+      "name": "msi",
+      "title": "Moisture index - SWIR16, Water vapour",
+      "abstract": "Moisture index (MSI) B11 / B09",
+      "index_function": {
+        "function": "datacube_ows.band_utils.band_quotient",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "swir16",
+          "band2": "nir"
+        }
+      },
+      "needed_bands": ["swir16", "nir"],
+      "color_ramp": [
+        { "value": 0.3, "color": "#044c04" },
+        { "value": 0.6, "color": "#3e7d00" },
+        { "value": 1.0, "color": "#8cbd00" },
+        { "value": 1.3, "color": "#e4e4a2" },
+        { "value": 1.6, "color": "#cfc784" },
+        { "value": 1.8, "color": "#b7995c" },
+        { "value": 2.1, "color": "#835c4d" }
+      ],
+      "pq_masks": [
+        {
+          "band": "scl",
+          "values": [6, 8, 9, 10],
+          "invert": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "styles": [
+    {
+      "name": "chl_nn",
+      "title": "CHL NN",
+      "abstract": "Chlorophyll-a concentration, computed using Neural Network",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "chl_nn"
+        }
+      },
+      "needed_bands": ["chl_nn"],
+      "mpl_ramp": "jet",
+      "range": [-2.5, 2.5]
+    },
+    {
+      "name": "chl_oc4me",
+      "title": "CHL OC4ME",
+      "abstract": "Chlorophyll-a concentration, computed using 'OC4Me'",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "chl_oc4me"
+        }
+      },
+      "needed_bands": ["chl_oc4me"],
+      "mpl_ramp": "jet",
+      "range": [-2.5, 2.5]
+    },
+    {
+      "name": "TSM_NN",
+      "title": "TSM NN",
+      "abstract": "Total suspended matter concentration.",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "tsm_nn"
+        }
+      },
+      "needed_bands": ["tsm_nn"],
+      "mpl_ramp": "jet",
+      "range": [-2.5, 2.5]
+    },
+    {
+      "name": "wqsf_lsb",
+      "title": "WQSF",
+      "abstract": "Water Quality and Science Flags",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "wqsf_lsb"
+        }
+      },
+      "needed_bands": ["wqsf_lsb"],
+      "mpl_ramp": "jet",
+      "range": [0.0, 268435456]
+    },
+    {
+      "name": "adg443_nn",
+      "title": "ADG443 NN",
+      "abstract": "adg443 nn",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "adg443_nn"
+        }
+      },
+      "needed_bands": ["adg443_nn"],
+      "mpl_ramp": "jet",
+      "range": [-2.5, 2.5]
+    },
+    {
+      "name": "par",
+      "title": "PAR",
+      "abstract": "PAR",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "par"
+        }
+      },
+      "needed_bands": ["par"],
+      "mpl_ramp": "jet",
+      "range": [900, 1400]
+    },
+    {
+      "name": "t865",
+      "title": "T865",
+      "abstract": "T865",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "t865"
+        }
+      },
+      "needed_bands": ["t865"],
+      "mpl_ramp": "jet",
+      "range": [-0.5, 1]
+    },
+    {
+      "name": "iwv",
+      "title": "IWV",
+      "abstract": "iwv",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "iwv"
+        }
+      },
+      "needed_bands": ["iwv"],
+      "mpl_ramp": "jet",
+      "range": [0, 40]
+    },
+    {
+      "name": "rgb_s3",
+      "title": "RGB",
+      "abstract": "RGB Sentinel-3",
+      "components": {
+        "red": {
+          "oa08": 1.0
+        },
+        "green": {
+          "oa06": 1.0
+        },
+        "blue": {
+          "oa04": 1.0
+        }
+      },
+      "scale_range": [0, 0.02]
+    }
+  ]
+}

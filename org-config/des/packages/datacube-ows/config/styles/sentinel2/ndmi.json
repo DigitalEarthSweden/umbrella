@@ -1,0 +1,21 @@
+{
+  "default_style": "NDMI",
+  "styles": [
+    {
+      "name": "NDMI",
+      "title": "NDMI",
+      "abstract": "NDMI (Normalized Difference Moisture Index) (B8A-B11)/(B8A+B11)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "nir08",
+          "band2": "swir16"
+        }
+      },
+      "needed_bands": ["swir16", "nir08"],
+      "mpl_ramp": "RdYlBu",
+      "range": [-0.2, 0.4]
+    }
+  ]
+}

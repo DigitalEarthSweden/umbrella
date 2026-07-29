@@ -1,0 +1,100 @@
+{
+  "default_style": "NDVI",
+  "styles": [
+    {
+      "name": "NDVI",
+      "title": "NDVI",
+      "abstract": "NDVI (Normalized difference vegetation) (B8-B4) / (B8+B4)",
+      "index_function": {
+        "function": "datacube_ows.band_utils.norm_diff",
+        "mapped_bands": true,
+        "kwargs": {
+          "band1": "nir",
+          "band2": "red"
+        }
+      },
+      "needed_bands": ["red", "nir"],
+      "color_ramp": [
+        {
+          "value": -0.1,
+          "color": "#250a00"
+        },
+        {
+          "value": 0.1,
+          "color": "#9f512a"
+        },
+        {
+          "value": 0.15,
+          "color": "#b39312"
+        },
+        {
+          "value": 0.25,
+          "color": "#f5d13f"
+        },
+        {
+          "value": 0.3,
+          "color": "#f5ec3f"
+        },
+        {
+          "value": 0.35,
+          "color": "#a2c000"
+        },
+        {
+          "value": 0.4,
+          "color": "#8bb000"
+        },
+        {
+          "value": 0.1,
+          "color": "#9f512a"
+        },
+        {
+          "value": 0.15,
+          "color": "#b39312"
+        },
+        {
+          "value": 0.25,
+          "color": "#f5d13f"
+        },
+        {
+          "value": 0.3,
+          "color": "#f5ec3f"
+        },
+        {
+          "value": 0.35,
+          "color": "#a2c000"
+        },
+        {
+          "value": 0.4,
+          "color": "#8bb000"
+        },
+        {
+          "value": 0.45,
+          "color": "#759e00"
+        },
+        {
+          "value": 0.5,
+          "color": "#5e8e00"
+        },
+        {
+          "value": 0.55,
+          "color": "#458000"
+        },
+        {
+          "value": 0.6,
+          "color": "#2d7000"
+        },
+        {
+          "value": 0.65,
+          "color": "#124600"
+        },
+        {
+          "value": 0.7,
+          "color": "#003500"
+        }
+      ],
+      "legend": {
+        "title": "NDVI."
+      }
+    }
+  ]
+}

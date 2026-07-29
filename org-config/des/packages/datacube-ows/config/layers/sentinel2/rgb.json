@@ -1,0 +1,22 @@
+{
+  "name": "rgb",
+  "title": "True color (Red, Green, Blue)",
+  "abstract": "RGB True Color (B4, B3, B2)",
+  "dynamic": true,
+  "product_name": "s2_msi_l2a",
+  "time_resolution": "solar",
+  "bands": {
+    "red": ["b04"],
+    "green": ["b03"],
+    "blue": ["b02"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [10, 10],
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "styling": {
+    "include": "/config/styles/sentinel2/rgb.json",
+    "type": "json"
+  }
+}

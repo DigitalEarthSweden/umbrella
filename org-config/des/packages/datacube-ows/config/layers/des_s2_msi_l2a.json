@@ -1,0 +1,11 @@
+{
+  "title": "DES Sentinel-2 MSI L2A",
+  "abstract": "Sentinel-2 L2A product timeseries in SWEREF 99 projection",
+  "product_name": "des_s2_msi_l2a",
+  "layers": [
+    {
+      "include": "/config/layers/des_s2_msi_l2a/des_s2_msi_l2a.json",
+      "type": "json"
+    }
+  ]
+}

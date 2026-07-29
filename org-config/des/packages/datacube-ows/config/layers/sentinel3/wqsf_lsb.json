@@ -1,0 +1,20 @@
+{
+  "name": "wqsf",
+  "title": "WQSF",
+  "abstract": "Water Quality and Science Flags",
+  "dynamic": true,
+  "product_name": "s3_olci_l2wfr",
+  "time_resolution": "solar",
+  "bands": {
+    "wqsf_lsb": ["wqsf_lsb"]
+  },
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [300, 300],
+  "styling": {
+    "include": "/config/styles/sentinel3/wqsf_lsb.json",
+    "type": "json"
+  }
+}

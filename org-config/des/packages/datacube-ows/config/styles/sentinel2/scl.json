@@ -1,0 +1,83 @@
+{
+  "styles": [
+    {
+      "name": "SCL",
+      "title": "scl",
+      "abstract": "Scene classification",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "scl"
+        }
+      },
+      "needed_bands": ["scl"],
+      "value_map": {
+        "scl": [
+          { "title": "No data", "values": [0], "color": "#000000", "alpha": 1 },
+          {
+            "title": "Saturated or defective",
+            "values": [1],
+            "color": "#ff0000",
+            "alpha": 1
+          },
+          {
+            "title": "Dark area pixels",
+            "values": [2],
+            "color": "#404040",
+            "alpha": 1
+          },
+          {
+            "title": "Cloud shadows",
+            "values": [3],
+            "color": "#803d0d",
+            "alpha": 1
+          },
+          {
+            "title": "Vegetation",
+            "values": [4],
+            "color": "#00ff00",
+            "alpha": 1
+          },
+          {
+            "title": "Not vegetated",
+            "values": [5],
+            "color": "#ffff00",
+            "alpha": 1
+          },
+          { "title": "Water", "values": [6], "color": "#0000cc", "alpha": 1 },
+          {
+            "title": "Unclassified",
+            "values": [7],
+            "color": "#757070",
+            "alpha": 1
+          },
+          {
+            "title": "Cloud medium probability",
+            "values": [8],
+            "color": "#adabab",
+            "alpha": 1
+          },
+          {
+            "title": "Cloud high probability",
+            "values": [9],
+            "color": "#d1cfcf",
+            "alpha": 1
+          },
+          {
+            "title": "Thin cirrus",
+            "values": [10],
+            "color": "#00ccff",
+            "alpha": 1
+          },
+          { "title": "Snow", "values": [11], "color": "#ff66ff", "alpha": 1 }
+        ]
+      },
+      "legend": {
+        "title": "Scene classification:",
+        "width": 2.5,
+        "height": 3.0
+      }
+    }
+  ]
+}

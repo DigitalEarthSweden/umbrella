@@ -1,0 +1,35 @@
+{
+  "name": "sentinel2_reflectance",
+  "title": "Sentinel-2 reflectance",
+  "abstract": "This layer is designed for Sentinel-2 images for the year 2022 and after. <br><br> The Sentinel-2 mission consists of two polar orbiting Sentinel-2A and Sentinel-2B equipped with the MSI (Multi-Spectral Instrument) sensor. It has 13 bands from 10 – 60 m pixel size. More info here: <a href='https://gisgeography.com/sentinel-2-bands-combinations/'>Sentinel 2 Bands and Combinations - GIS Geography </a> <br><br> Here is a list of the layers which can be selected. <br><br> - Simple RGB. B04, B03, B02. <br> <br>- <a href='https://custom-scripts.sentinel-hub.com/sentinel-2/false_color_infrared/'>False Color</a>. NIR, Green, Blue (B08, B04, B02). <br> <br>- <a href='https://custom-scripts.sentinel-hub.com/sentinel-2/false-color-urban-rgb/'>False Color Urban </a> SWIR22, SWIR16, Red - (B12, B11, B04). <br> <br>- <a href='https://custom-scripts.sentinel-hub.com/sentinel-2/swir-rgb/'>SWIR - Short Wave Infrared RGB Composite</a>. SWIR22, Narrow NIR, Blue - (B12, B8A, B04). <br> <br>- <a href='https://eos.com/make-an-analysis/ndvi/'>NDVI</a>. Normalized difference vegetation index. (B8-B4) / (B8+B4). <br> <br>- <a href='https://custom-scripts.sentinel-hub.com/sentinel-2/ndwi/'> NDWI </a>. Normalized difference wetness index. NIR, Red - (B03 - B08) / (B03 + B08). <br> <br>- <a href='https://un-spider.org/advisory-support/recommended-practices/recommended-practice-burn-severity/in-detail/normalized-burn-ratio'>NBI</a>. Normalized difference burn index. NIR, SWIR22 - (B08 - B12) / (B08 + B12). <br> <br>- <a href='https://custom-scripts.sentinel-hub.com/custom-scripts/sentinel-2/msi/'> MSI</a>. Moisture index. SWIR16, Water vapour - (B11 / B09).<br>",
+  "dynamic": true,
+  "product_name": "s2_msi_l2a",
+  "time_resolution": "solar",
+  "bands": {
+    "blue": ["b02"],
+    "green": ["b03"],
+    "red": ["b04"],
+    "nir": ["b08"],
+    "nir08": ["b08a"],
+    "swir16": ["b11"],
+    "swir22": ["b12"],
+    "scl": ["scl"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [10, 10],
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "styling": {
+    "include": "/config/styles/sentinel2/dropdown_styles.json",
+    "type": "json"
+  },
+  "flags": [
+    {
+      "band": "scl",
+      "product": "s2_msi_l2a",
+      "ignore_time": false,
+      "ignore_info_flags": []
+    }
+  ]
+}

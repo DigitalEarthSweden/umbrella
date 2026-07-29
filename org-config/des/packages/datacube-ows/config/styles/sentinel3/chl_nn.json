@@ -1,0 +1,20 @@
+{
+  "default_style": "CHL_NN",
+  "styles": [
+    {
+      "name": "CHL_NN",
+      "title": "CHL NN",
+      "abstract": "Chlorophyll-a concentration, computed using Neural Network",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "chl_nn"
+        }
+      },
+      "needed_bands": ["chl_nn"],
+      "mpl_ramp": "jet",
+      "range": [-2.0, 2.0]
+    }
+  ]
+}

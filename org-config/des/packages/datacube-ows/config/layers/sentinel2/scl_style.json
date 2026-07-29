@@ -1,0 +1,20 @@
+{
+  "name": "scl_style",
+  "title": "Scene classification",
+  "abstract": "Scene classification layer derived from Sentinel-2 images using Sen2cor. Each image has been classified and the classes can be selected for viewing in this layer. The following classes are available: <br>Vegetation, non-vegetation, clouds (includes medium & high probability and cirrus), water, snow, cloud shadow and other (saturated or defective, dark area pixel and unclassified)<br> <br>More information: <a href=' https://www.researchgate.net/publication/320231869_Sen2Cor_for_Sentinel-2 '> Sen2Cor for Sentinel-2 </a><br>",
+  "dynamic": true,
+  "product_name": "s2_msi_l2a",
+  "time_resolution": "solar",
+  "bands": {
+    "scl": ["scl"]
+  },
+  "native_crs": "EPSG:3006",
+  "native_resolution": [10, 10],
+  "image_processing": {
+    "extent_mask_func": ["datacube_ows.ogc_utils.mask_by_val"]
+  },
+  "styling": {
+    "include": "/config/styles/sentinel2/scl_style.json",
+    "type": "json"
+  }
+}

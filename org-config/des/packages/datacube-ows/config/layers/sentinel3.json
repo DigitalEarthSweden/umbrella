@@ -1,0 +1,11 @@
+{
+  "title": "Sentinel-3 OLCI Level-2 WFR",
+  "abstract": "Sentinel-3 OLCI Level-2 Water Full Resolution",
+  "keywords": [],
+  "layers": [
+    {
+      "include": "/config/layers/sentinel3/s3_dropdown.json",
+      "type": "json"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "default_style": "TSM_NN",
+  "styles": [
+    {
+      "name": "TSM_NN",
+      "title": "TSM NN",
+      "abstract": "Total suspended matter concentration.",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "tsm_nn"
+        }
+      },
+      "needed_bands": ["tsm_nn"],
+      "mpl_ramp": "jet",
+      "range": [-2.5, 2.5]
+    }
+  ]
+}
