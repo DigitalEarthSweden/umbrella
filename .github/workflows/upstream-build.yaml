@@ -4,13 +4,14 @@ on:
   schedule:
     - cron: "0 0 * * *"
   pull_request:
-  push:
-    branches:
-      - main
-    paths:
+    paths: &paths
       - ".github/workflows/upstream-build.yaml"
       - "common/Makefile"
       - "upstream/**"
+  push:
+    branches:
+      - main
+    paths: *paths
   workflow_dispatch:
 
 permissions: {}

@@ -4,16 +4,17 @@ on:
   schedule:
     - cron: "0 0 * * *"
   pull_request:
-  push:
-    branches:
-      - main
-    paths:
+    paths: &paths
       - ".dockerignore"
       - ".github/workflows/build-packages-datacube-ows.yaml"
       - ".github/workflows/docker-build.yaml"
       - "common/Makefile"
       - "org-config/*/packages/datacube-ows/**"
       - "packages/datacube-ows/**"
+  push:
+    branches:
+      - main
+    paths: *paths
   workflow_dispatch:
 
 permissions: {}
