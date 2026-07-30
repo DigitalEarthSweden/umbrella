@@ -1,0 +1,57 @@
+name: terriamap
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  pull_request:
+    paths: &paths
+      - ".github/actions/docker-build/action.yaml"
+      - ".github/workflows/build-packages-terriamap.yaml"
+      - "common/Makefile"
+      - "packages/terriamap/**"
+  push:
+    branches:
+      - main
+    paths: *paths
+  workflow_dispatch:
+
+permissions: {}
+
+# When a PR is updated, cancel the jobs from the previous version. Merges
+# do not define head_ref, so use run_id to never cancel those jobs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  datacube-ows:
+    name: terriamap
+    environment:
+      name: upstream-build
+      deployment: false
+    timeout-minutes: 15
+    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
+    runs-on: ubuntu-26.04
+    permissions:
+      id-token: write # This is required for cosign
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ github.repository_owner }}/TerriaMap
+          path: packages/terriamap/TerriaMap
+          persist-credentials: false
+          token: ${{ secrets.PAT_TERRIAMAP_RO }}
+
+      - name: Docker Build
+        uses: ./.github/actions/docker-build
+        with:
+          build-path: packages/terriamap
+          ci-registry: ${{ vars.CI_REGISTRY }}
+          ci-registry-base-path: ${{ vars.CI_REGISTRY_BASE_PATH }}
+          ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_RW }}
+          organization-name: ${{ vars.ORGANIZATION_NAME }}
