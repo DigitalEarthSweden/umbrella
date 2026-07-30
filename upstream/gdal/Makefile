@@ -30,14 +30,7 @@ build-3132-image:
 	$(Q)perl -pi -e "s| apt-get update -y| perl -pi -e 's#//archive\\\\.ubuntu\\\\.com#//mirror.bahnhof.net#g' /etc/apt/sources.list.d/ubuntu.sources && apt-get update -y|g" gdal-3132/docker/ubuntu-*/Dockerfile
 	$(Q)$(MAKE) build-3132-image-internal
 
-build-3132-image-internal: build-big-3132-image build-slim-3132-image
-
-BIG_3132_ARGS = IMAGE_BUILD_DIR=gdal-3132/docker \
-             IMAGE_BASE_NAME=gdal \
-             DOCKER_ARGS="--release --gdal v3.13.2 --proj 9.8.1"
-
-build-big-3132-image:
-	$(Q)$(MAKE) IMAGE_REV_PREFIX=ubuntu-full IMAGE_REV=3.13.2 $(BIG_3132_ARGS) build-gdal-upstream-image
+build-3132-image-internal: build-slim-3132-image
 
 SLIM_3132_ARGS = IMAGE_BUILD_DIR=gdal-3132/docker \
              IMAGE_BASE_NAME=gdal \
@@ -51,5 +44,4 @@ build-slim-3132-image:
 
 .PHONY: build-images \
   build-3130-image build-3130-image-internal build-slim-3130-image \
-  build-3132-image build-3132-image-internal build-big-3132-image \
-  build-slim-3132-image
+  build-3132-image build-3132-image-internal build-slim-3132-image
