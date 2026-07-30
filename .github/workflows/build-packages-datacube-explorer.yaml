@@ -8,11 +8,12 @@ on:
     branches:
       - main
     paths:
+      - ".dockerignore"
       - ".github/workflows/build-packages-datacube-explorer.yaml"
       - ".github/workflows/docker-build.yaml"
       - "common/Makefile"
-      - "org-config/*/packages/datacube-explorer"
-      - "packages/datacube-explorer"
+      - "org-config/*/packages/datacube-explorer/**"
+      - "packages/datacube-explorer/**"
   workflow_dispatch:
 
 permissions: {}

@@ -8,11 +8,12 @@ on:
     branches:
       - main
     paths:
+      - ".dockerignore"
       - ".github/workflows/build-packages-datacube-ows.yaml"
       - ".github/workflows/docker-build.yaml"
       - "common/Makefile"
-      - "org-config/*/packages/datacube-ows"
-      - "packages/datacube-ows"
+      - "org-config/*/packages/datacube-ows/**"
+      - "packages/datacube-ows/**"
   workflow_dispatch:
 
 permissions: {}
