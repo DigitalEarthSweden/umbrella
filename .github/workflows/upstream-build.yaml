@@ -10,7 +10,7 @@ on:
     paths:
       - ".github/workflows/upstream-build.yaml"
       - "common/Makefile"
-      - "upstream"
+      - "upstream/**"
   workflow_dispatch:
 
 permissions: {}
