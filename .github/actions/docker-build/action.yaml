@@ -1,0 +1,74 @@
+name: docker-build
+description: "Build a Docker image"
+
+inputs:
+  build-path:
+    description: "Path to build"
+    required: true
+  ci-registry:
+    description: "Docker registry address"
+    required: true
+  ci-registry-base-path:
+    description: "Directory/project for our images"
+    required: true
+  ci-registry-upstream-base-path:
+    description: "Directory/project for upstream images"
+    required: true
+  docker-auth-config:
+    description: "DOCKER_AUTH_CONFIG with write permission to ci-registry-base-path"
+    required: true
+  organization-name:
+    description: "Short name of organization"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+
+    - name: Get Git commit timestamps
+      shell: sh
+      run: |
+        TIMESTAMP=$(git log -1 --pretty=%ct .)
+        echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+        SHORT_SHA=$(git rev-parse --short ${GITHUB_SHA})
+        echo "COMMIT_SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+      env:
+        GITHUB_SHA: ${{ github.sha }}
+
+    - name: Install cosign
+      if: github.ref == 'refs/heads/main'
+      uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+
+    - name: Configure to push
+      if: github.ref == 'refs/heads/main'
+      shell: sh
+      run: |
+        echo "PUSH_CMD=docker" >> $GITHUB_ENV
+        echo "PUSH_OPTION=--push" >> $GITHUB_ENV
+        echo "COSIGN_CMD=cosign" >> $GITHUB_ENV
+
+    - name: Build image
+      shell: sh
+      run: |
+        set -o pipefail
+        # Unset empty commands for check in Makefile.
+        [ -n "$COSIGN_CMD" ] || unset COSIGN_CMD
+        [ -n "$PUSH_CMD" ] || unset PUSH_CMD
+        [ -n "$PUSH_OPTION" ] || unset PUSH_OPTION
+        export BUILDKIT_PROGRESS=plain
+        export Q=''
+        make -C $BUILD_PATH -j2 build-images
+      env:
+        BUILD_PATH: ${{ inputs.build-path }}
+        CI_REGISTRY: ${{ inputs.ci-registry }}
+        CI_REGISTRY_BASE_PATH: ${{ inputs.ci-registry-base-path }}
+        CI_REGISTRY_UPSTREAM_BASE_PATH: ${{ inputs.ci-registry-upstream-base-path }}
+        COMMIT_SHORT_SHA: ${{ env.COMMIT_SHORT_SHA }}
+        COSIGN_CMD: ${{ env.COSIGN_CMD }}
+        DOCKER_AUTH_CONFIG: ${{ inputs.docker-auth-config }}
+        ORGANIZATION_NAME: ${{ inputs.organization-name }}
+        PUSH_CMD: ${{ env.PUSH_CMD }}
+        PUSH_OPTION: ${{ env.PUSH_OPTION }}
+        SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
