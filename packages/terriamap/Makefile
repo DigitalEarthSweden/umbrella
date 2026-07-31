@@ -4,7 +4,7 @@ IMAGE_BUILD_DIR = TerriaMap
 
 DOCKER_ARGS += --target deploy
 DOCKER_ARGS += --build-context node:20=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_UPSTREAM_BASE_PATH)/$(ORGANIZATION_NAME)-node:24
-DOCKER_ARSG += --build-context node:20-slim=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_UPSTREAM_BASE_PATH)/$(ORGANIZATION_NAME)-node:24-slim
+DOCKER_ARGS += --build-context node:20-slim=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_UPSTREAM_BASE_PATH)/$(ORGANIZATION_NAME)-node:24-slim
 DOCKER_ARGS += $(DOCKER_EXTRA_ARGS)
 
 DOCKER_TAGS = $(IMAGE_VAR):latest
