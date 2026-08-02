@@ -14,6 +14,9 @@ inputs:
   ci-registry-upstream-base-path:
     description: "Directory/project for upstream images"
     required: true
+  do-push:
+    description: "Push built image to registry"
+    required: true
   docker-auth-config:
     description: "DOCKER_AUTH_CONFIG with write permission to ci-registry-base-path"
     required: true
@@ -38,11 +41,11 @@ runs:
         GITHUB_SHA: ${{ github.sha }}
 
     - name: Install cosign
-      if: github.ref == 'refs/heads/main'
+      if: ${{ inputs.do-push == 'true' }}
       uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
 
     - name: Configure to push
-      if: github.ref == 'refs/heads/main'
+      if: ${{ inputs.do-push == 'true' }}
       shell: sh
       run: |
         echo "PUSH_CMD=docker" >> $GITHUB_ENV

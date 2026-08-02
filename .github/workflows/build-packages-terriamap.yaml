@@ -53,5 +53,6 @@ jobs:
           ci-registry: ${{ vars.CI_REGISTRY }}
           ci-registry-base-path: ${{ vars.CI_REGISTRY_BASE_PATH }}
           ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          do-push: ${{ github.ref == 'refs/heads/main' }}
           docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_RW }}
           organization-name: ${{ vars.ORGANIZATION_NAME }}
