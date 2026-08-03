@@ -1,0 +1,114 @@
+name: build-packages
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  pull_request:
+    paths: &paths
+      - ".dockerignore"
+      - ".github/actions/docker-build/action.yaml"
+      - ".github/workflows/build-packages.yaml"
+      - "common/Makefile"
+      - "org-config/*/packages/**"
+      - "packages/**"
+  push:
+    branches:
+      - main
+    paths: *paths
+  workflow_dispatch:
+
+permissions: {}
+
+# When a PR is updated, cancel the jobs from the previous version. Merges
+# do not define head_ref, so use run_id to never cancel those jobs.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  identify-jobs:
+    name: identify-jobs
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    timeout-minutes: 10
+    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Generate Build Matrix
+        id: set-matrix
+        shell: bash
+        run: |
+          # Terriamap is handled by a separate workflow.
+          ANTI_PATTERN="terriamap"
+          # Files/directories that trigger rebuild of everything.
+          ALL_PATTERN="\.github\/|\.dockerignore|common\/Makefile"
+          # Package changes, only rebuild the specific packages.
+          PACKAGES_PATTERN="packages\/"
+          git fetch origin ${{ github.event.pull_request.base.ref }}
+          all_files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} HEAD | grep -v $ANTI_PATTERN)
+          declare -a PKGS
+          # Rebuild everything on CI changes and schedule/manual trigger.
+          if [[ $all_files =~ $ALL_PATTERN ]] || [ ${{ github.event_name }} = "schedule" ] || [ ${{ github.event_name }} = "workflow_dispatch" ]; then
+            DIRS=$(ls -l packages/ | grep -E ^d | awk '{print $9}' | grep -v $ANTI_PATTERN)
+            for d in $DIRS; do
+              PKGS+=("$d")
+            done
+          elif [[ $all_files =~ $PACKAGES_PATTERN ]]; then
+            CFG_PATTERN="\/packages\/"
+            for file in $all_files; do
+              if [[ $file =~ $CFG_PATTERN ]]; then
+                PKGS1=$(echo $file | awk -F/packages/ '{print $2}' | awk -F/ '{print $1}')
+              elif [[ $file =~ $PACKAGES_PATTERN ]]; then
+                PKGS1=$(echo $file | awk -Fpackages/ '{print $2}' | awk -F/ '{print $1}')
+              fi
+              if [[ ! " ${PKGS[*]} " =~ " ${PKGS1} " ]]; then
+                PKGS+=("$PKGS1")
+              fi
+            done
+          fi
+          tmp=""
+          for pkg in "${PKGS[@]}"; do
+            if [ "$tmp" != "" ]; then
+              tmp+=","
+            fi
+            tmp+="{\"package\": \"$pkg\", \"build-path\": \"packages/$pkg\"}"
+          done
+          if [ "$tmp" != "" ]; then
+            echo "matrix={\"include\":[$tmp]}" >> $GITHUB_OUTPUT
+          fi
+
+  build-image:
+    name: build-image
+    needs:
+      - identify-jobs
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.identify-jobs.outputs.matrix) }}
+    environment:
+      name: upstream-build
+      deployment: false
+    timeout-minutes: 15
+    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
+    runs-on: ubuntu-26.04
+    permissions:
+      id-token: write # This is required for cosign
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Docker Build
+        uses: ./.github/actions/docker-build
+        with:
+          build-path: ${{ matrix.build-path }}
+          ci-registry: ${{ vars.CI_REGISTRY }}
+          ci-registry-base-path: ${{ vars.CI_REGISTRY_BASE_PATH }}
+          ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          do-push: ${{ github.ref == 'refs/heads/main' }}
+          docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_RW }}
+          organization-name: ${{ vars.ORGANIZATION_NAME }}
