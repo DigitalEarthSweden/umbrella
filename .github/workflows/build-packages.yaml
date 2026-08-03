@@ -78,9 +78,11 @@ jobs:
             fi
             tmp+="{\"package\": \"$pkg\", \"build-path\": \"packages/$pkg\"}"
           done
-          if [ "$tmp" != "" ]; then
-            echo "matrix={\"include\":[$tmp]}" >> $GITHUB_OUTPUT
+          if [ "$tmp" = "" ]; then
+            echo "Internal error: no changes detected. Debug info (all_files): $all_files"
+            exit 1
           fi
+          echo "matrix={\"include\":[$tmp]}" >> $GITHUB_OUTPUT
 
   build-image:
     name: build-image
