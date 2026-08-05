@@ -20,6 +20,14 @@ inputs:
   docker-auth-config:
     description: "DOCKER_AUTH_CONFIG with write permission to ci-registry-base-path"
     required: true
+  extra-repository:
+    description: "Extra repository to checkout before building"
+    required: false
+    default: ""
+  extra-repository-token:
+    description: "Token (PAT) for checking out extra repository"
+    required: false
+    default: ""
   organization-name:
     description: "Short name of organization"
     required: true
@@ -27,9 +35,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
-
     - name: Get Git commit timestamps
       id: git-info
       shell: sh
@@ -40,6 +45,17 @@ runs:
         echo "COMMIT_SHORT_SHA=$SHORT_SHA" >> $GITHUB_OUTPUT
       env:
         GITHUB_SHA: ${{ github.sha }}
+
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      if: ${{ inputs.extra-repository != '' }}
+      with:
+        repository: ${{ github.repository_owner }}/${{ inputs.extra-repository }}
+        path: ${{ inputs.build-path }}/${{ inputs.extra-repository }}
+        persist-credentials: false
+        token: ${{ inputs.extra-repository-token }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
 
     - name: Install cosign
       if: ${{ inputs.do-push == 'true' }}
