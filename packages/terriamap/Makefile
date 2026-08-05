@@ -10,6 +10,9 @@ DOCKER_ARGS += $(DOCKER_EXTRA_ARGS)
 DOCKER_TAGS = $(IMAGE_VAR):latest
 LOCAL_IMAGE = 1
 
+BUILD_TIMEOUT = 25
+EXTRA_BUILD_REPOSITORY = TerriaMap
+
 build-images:
 	$(Q)perl -pi -e 's#"--config-file", "serverconfig.json" \]#"--config-file", "serverconfig.json", "--proxy-auth", "proxyauth.json" \]#g' TerriaMap/Dockerfile
 	$(Q)$(MAKE) build-images-internal

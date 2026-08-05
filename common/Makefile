@@ -37,6 +37,13 @@ DOCKER_SLIM_CONTEXT ?= --build-context debian:bookworm-slim=docker-image://$(CI_
 # The start of the pytest command.
 PYTEST_PREFIX_CMD = uv run pytest -vv --cov --cov-report term-missing
 
+build-timeout: BUILD_TIMEOUT ?= 10
+build-timeout:
+	$(Q)echo "$(BUILD_TIMEOUT)"
+
+extra-build-repository:
+	$(Q)echo "$(EXTRA_BUILD_REPOSITORY)"
+
 # Default to root directory.
 IMAGE_BUILD_DIR ?= $(MAKEFILE_DIR)/..
 

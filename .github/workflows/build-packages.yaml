@@ -28,6 +28,9 @@ concurrency:
 jobs:
   identify-jobs:
     name: identify-jobs
+    environment:
+      name: upstream-build
+      deployment: false
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     timeout-minutes: 10
@@ -43,22 +46,20 @@ jobs:
         id: set-matrix
         shell: bash
         run: |
-          # Terriamap is handled by a separate workflow.
-          ANTI_PATTERN="terriamap"
           # Files/directories that trigger rebuild of everything.
           ALL_PATTERN="\.github\/|\.dockerignore|common\/Makefile"
           # Package changes, only rebuild the specific packages.
           PACKAGES_PATTERN="packages\/"
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
             git fetch origin $GITHUB_PR_BASE_REF
-            all_files=$(git diff --name-only origin/$GITHUB_PR_BASE_REF HEAD | grep -v $ANTI_PATTERN)
+            all_files=$(git diff --name-only origin/$GITHUB_PR_BASE_REF HEAD)
           elif [ "$GITHUB_EVENT_NAME" = "push" ]; then
-            all_files=$(git diff --name-only $GITHUB_EVENT_BEFORE $GITHUB_EVENT_AFTER | grep -v $ANTI_PATTERN)
+            all_files=$(git diff --name-only $GITHUB_EVENT_BEFORE $GITHUB_EVENT_AFTER)
           fi
           declare -a PKGS
           # Rebuild everything on CI changes and schedule/manual trigger.
           if [[ $all_files =~ $ALL_PATTERN ]] || [ "$GITHUB_EVENT_NAME" = "schedule" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            DIRS=$(ls -l packages/ | grep -E ^d | awk '{print $9}' | grep -v $ANTI_PATTERN)
+            DIRS=$(ls -l packages/ | grep -E ^d | awk '{print $9}')
             for d in $DIRS; do
               PKGS+=("$d")
             done
@@ -77,10 +78,12 @@ jobs:
           fi
           tmp=""
           for pkg in "${PKGS[@]}"; do
+            BUILD_TIMEOUT=$(make --no-print-directory -C packages/$pkg build-timeout)
+            EXTRA_REPOSITORY=$(make --no-print-directory -C packages/$pkg extra-build-repository)
             if [ "$tmp" != "" ]; then
               tmp+=","
             fi
-            tmp+="{\"package\": \"$pkg\", \"build-path\": \"packages/$pkg\"}"
+            tmp+="{\"package\": \"$pkg\", \"build-timeout\": $BUILD_TIMEOUT, \"extra-repository\": \"$EXTRA_REPOSITORY\"}"
           done
           if [ "$tmp" = "" ]; then
             echo "Internal error: no changes detected. Debug info (all_files): $all_files"
@@ -88,10 +91,13 @@ jobs:
           fi
           echo "matrix={\"include\":[$tmp]}" >> $GITHUB_OUTPUT
         env:
+          CI_REGISTRY: ${{ vars.CI_REGISTRY }}
+          CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_BASE_PATH }}
           GITHUB_EVENT_AFTER: ${{ github.event.after }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
+          ORGANIZATION_NAME: ${{ vars.ORGANIZATION_NAME }}
 
   build-image:
     name: build-image
@@ -103,7 +109,7 @@ jobs:
     environment:
       name: upstream-build
       deployment: false
-    timeout-minutes: 15
+    timeout-minutes: ${{ matrix.build-timeout }}
     # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
     runs-on: ubuntu-26.04
     permissions:
@@ -116,10 +122,12 @@ jobs:
       - name: Docker Build
         uses: ./.github/actions/docker-build
         with:
-          build-path: ${{ matrix.build-path }}
+          build-path: packages/${{ matrix.package }}
           ci-registry: ${{ vars.CI_REGISTRY }}
           ci-registry-base-path: ${{ vars.CI_REGISTRY_BASE_PATH }}
           ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
           do-push: ${{ github.ref == 'refs/heads/main' }}
           docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_RW }}
+          extra-repository: ${{ matrix.extra-repository }}
+          extra-repository-token: ${{ secrets.PAT_EXTRA_REPO_RO }}
           organization-name: ${{ vars.ORGANIZATION_NAME }}
