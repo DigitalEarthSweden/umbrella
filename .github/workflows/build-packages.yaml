@@ -49,15 +49,15 @@ jobs:
           ALL_PATTERN="\.github\/|\.dockerignore|common\/Makefile"
           # Package changes, only rebuild the specific packages.
           PACKAGES_PATTERN="packages\/"
-          if [ ${{ github.event_name }} = "pull_request" ]; then
-            git fetch origin ${{ github.event.pull_request.base.ref }}
-            all_files=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }} HEAD | grep -v $ANTI_PATTERN)
-          elif [ ${{ github.event_name }} = "push" ]; then
-            all_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -v $ANTI_PATTERN)
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            git fetch origin $GITHUB_PR_BASE_REF
+            all_files=$(git diff --name-only origin/$GITHUB_PR_BASE_REF HEAD | grep -v $ANTI_PATTERN)
+          elif [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            all_files=$(git diff --name-only $GITHUB_EVENT_BEFORE $GITHUB_EVENT_AFTER | grep -v $ANTI_PATTERN)
           fi
           declare -a PKGS
           # Rebuild everything on CI changes and schedule/manual trigger.
-          if [[ $all_files =~ $ALL_PATTERN ]] || [ ${{ github.event_name }} = "schedule" ] || [ ${{ github.event_name }} = "workflow_dispatch" ]; then
+          if [[ $all_files =~ $ALL_PATTERN ]] || [ "$GITHUB_EVENT_NAME" = "schedule" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
             DIRS=$(ls -l packages/ | grep -E ^d | awk '{print $9}' | grep -v $ANTI_PATTERN)
             for d in $DIRS; do
               PKGS+=("$d")
@@ -87,6 +87,11 @@ jobs:
             exit 1
           fi
           echo "matrix={\"include\":[$tmp]}" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_EVENT_AFTER: ${{ github.event.after }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
 
   build-image:
     name: build-image
