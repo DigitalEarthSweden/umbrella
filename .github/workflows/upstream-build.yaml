@@ -57,7 +57,7 @@ jobs:
           echo "PUSH_OPTION=--push" >> $GITHUB_ENV
           echo "COSIGN_CMD=cosign" >> $GITHUB_ENV
 
-      - name: Build upstream images
+      - name: Build buildpack-deps and Ubuntu images
         run: |
           set -o pipefail
           # Unset empty commands for check in Makefile.
@@ -67,8 +67,29 @@ jobs:
           export BUILDKIT_PROGRESS=plain
           export Q=''
           export DOCKER_EXTRA_UPSTREAM_ARGS="--pull --no-cache"
-          # Build buildpack-deps/Ubuntu first, but build the other images even if it fails.
-          make -k -C upstream DIRS=buildpack-deps -j2 all || true
+          make -k -C upstream DIRS=buildpack-deps -j2 all
+        env:
+          CI_REGISTRY: ${{ vars.CI_REGISTRY }}
+          CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          COSIGN_CMD: ${{ env.COSIGN_CMD }}
+          DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG_UPSTREAM_RW }}
+          ORGANIZATION_NAME: ${{ vars.ORGANIZATION_NAME }}
+          PUSH_CMD: ${{ env.PUSH_CMD }}
+          PUSH_OPTION: ${{ env.PUSH_OPTION }}
+          SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
+
+      - name: Build upstream images
+        # Build even if previous step failed, but permit cancelling the job.
+        if: success() || failure()
+        run: |
+          set -o pipefail
+          # Unset empty commands for check in Makefile.
+          [ -n "$COSIGN_CMD" ] || unset COSIGN_CMD
+          [ -n "$PUSH_CMD" ] || unset PUSH_CMD
+          [ -n "$PUSH_OPTION" ] || unset PUSH_OPTION
+          export BUILDKIT_PROGRESS=plain
+          export Q=''
+          export DOCKER_EXTRA_UPSTREAM_ARGS="--pull --no-cache"
           # Independent builds, so keep going to get non-failing images updated.
           make -k -C upstream -j2 all
         env:
