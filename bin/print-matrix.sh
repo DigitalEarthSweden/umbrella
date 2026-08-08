@@ -5,29 +5,38 @@ error() {
   exit 1
 }
 
-# Files/directories that trigger rebuild of everything.
-ALL_PATTERN="\.github\/|\.dockerignore|common\/Makefile"
-# Package changes, only rebuild the specific packages.
-PACKAGES_PATTERN="packages\/"
+[ -n "$ALL_PATTERN" ] || error "No ALL_PATTERN defined"
+[ -n "$PACKAGES_PATTERN" ] || error "No PACKAGES_PATTERN defined"
+[ -n "$PACKAGES_DIRECTORY" ] || error "No PACKAGES_DIRECTORY defined"
+
+[[ $PACKAGES_PATTERN =~ $PACKAGES_DIRECTORY ]] ||
+  error "Incompatible PACKAGES_* values ($PACKAGES_PATTERN =~ $PACKAGES_DIRECTORY)"
+
+[ -n "$GITHUB_EVENT_NAME" ] || error "No GITHUB_EVENT_NAME defined"
+
+[ -n "$ORIGIN_NAME" ] || export ORIGIN_NAME=origin
+
 if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+  [ -n "$GITHUB_PR_BASE_REF" ] || error "No GITHUB_PR_BASE_REF defined"
   git fetch origin "$GITHUB_PR_BASE_REF"
-  all_files=$(git diff --name-only "origin/$GITHUB_PR_BASE_REF" HEAD)
+  all_files=$(git diff --name-only "$ORIGIN_NAME/$GITHUB_PR_BASE_REF" HEAD)
 elif [ "$GITHUB_EVENT_NAME" = "push" ]; then
+  [ -n "$GITHUB_EVENT_AFTER" ] || error "No GITHUB_EVENT_AFTER defined"
+  [ -n "$GITHUB_EVENT_BEFORE" ] || error "No GITHUB_EVENT_BEFORE defined"
   all_files=$(git diff --name-only "$GITHUB_EVENT_BEFORE" "$GITHUB_EVENT_AFTER")
 fi
 declare -a PKGS
 # Rebuild everything on CI changes and schedule/manual trigger.
 if [[ $all_files =~ $ALL_PATTERN ]] || [ "$GITHUB_EVENT_NAME" = "schedule" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-  for d in packages/*/; do
+  for d in "$PACKAGES_DIRECTORY"/*/; do
     PKGS+=("$d")
   done
 elif [[ $all_files =~ $PACKAGES_PATTERN ]]; then
-  CFG_PATTERN="\/packages\/"
   for file in $all_files; do
-    if [[ $file =~ $CFG_PATTERN ]]; then
-      PKGS1=$(echo "$file" | awk -F/packages/ '{print $2}' | awk -F/ '{print $1}')
+    if [ -n "$CFG_PATTERN" ] && [[ $file =~ $CFG_PATTERN ]]; then
+      PKGS1=$(echo "$file" | awk -F"/$PACKAGES_DIRECTORY/" '{print $2}' | awk -F/ '{print $1}')
     elif [[ $file =~ $PACKAGES_PATTERN ]]; then
-      PKGS1=$(echo "$file" | awk -Fpackages/ '{print $2}' | awk -F/ '{print $1}')
+      PKGS1=$(echo "$file" | awk -F"$PACKAGES_DIRECTORY/" '{print $2}' | awk -F/ '{print $1}')
     fi
     if [[ ! " ${PKGS[*]} " =~ " ${PKGS1} " ]]; then
       PKGS+=("$PKGS1")
@@ -36,6 +45,12 @@ elif [[ $all_files =~ $PACKAGES_PATTERN ]]; then
 fi
 tmp=""
 for pkg in "${PKGS[@]}"; do
+  if [ -n "$EXCLUDED_PATTERN" ] && [[ $pkg =~ $EXCLUDED_PATTERN ]]; then
+    continue
+  fi
+  if [ -n "$INCLUDED_PATTERN" ] && [[ ! $pkg =~ $INCLUDED_PATTERN ]]; then
+    continue
+  fi
   BUILD_TIMEOUT=$(make --no-print-directory -C "$pkg" build-timeout)
   EXTRA_REPOSITORY=$(make --no-print-directory -C "$pkg" extra-build-repository)
   if [ "$tmp" != "" ]; then
