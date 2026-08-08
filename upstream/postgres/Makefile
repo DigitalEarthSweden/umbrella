@@ -12,6 +12,7 @@ build-images: $(UPSTREAM_REPO_NAME)
 	$(Q)$(MAKE) build-images-internal
 
 build-images-internal: build-big-18-image
+	$(Q)$(MAKE) build-dependencies
 
 BIG_18_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_REPO_NAME)/18/bookworm \
             IMAGE_BASE_NAME=postgres \
@@ -25,4 +26,11 @@ build-big-18-image:
 	$(Q)perl -pi -e 's#ENV PG_VERSION 18\.([0-9\-]+)(.+)\+(.+)$$#ENV PG_VERSION=18\.\1\.pgdg24\.04\+\3#g' $(UPSTREAM_REPO_NAME)/18/bookworm/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV=18-bookworm $(BIG_18_ARGS) build-upstream-image
 
-.PHONY: build-images build-big-18-image
+build-dependencies: build-postgis
+
+build-postgis:
+	$(Q)$(MAKE) -C ../postgis build-images
+
+.PHONY: build-images build-big-18-image \
+  build-dependencies \
+  build-postgis

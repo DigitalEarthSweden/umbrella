@@ -3,6 +3,9 @@ MAKEFILE_DIR := $(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
 UPSTREAM_REPO = https://github.com/OSGeo/gdal
 UPSTREAM_REPO_NAME = gdal
 
+# Includes time for building all dependencies.
+BUILD_TIMEOUT = 75
+
 include ../../common/Makefile
 
 build-images: build-3130-image build-3132-image
@@ -20,10 +23,12 @@ SLIM_3130_ARGS = IMAGE_BUILD_DIR=gdal-3130/docker \
              DOCKER_ARGS="--release --gdal v3.13.0 --proj 9.8.1"
 
 # Add NETCDF support to small image since Sentinel-3 requires that.
+# WARNING: this triggers build of the FORCE image.
 build-slim-3130-image:
 	$(Q)perl -p -i -e 's#sqlite3 bash-completion#sqlite3 libnetcdf-dev\$$\{APT_ARCH_SUFFIX\} libnetcdf-c\+\+4-1 netcdf-bin bash-completion#' gdal-3130/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#libxerces-c3.2 #libxerces-c3.2 libaec0 libnetcdf-c\+\+4-1 netcdf-bin #' gdal-3130/docker/ubuntu-small/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV_PREFIX=ubuntu-small IMAGE_REV=3.13.0 $(SLIM_3130_ARGS) build-gdal-upstream-image
+	$(Q)$(MAKE) -C ../force build-images
 
 build-3132-image:
 	$(Q)$(MAKE) UPSTREAM_REPO_NAME=gdal-3132 UPSTREAM_BRANCH=v3.13.2 UPSTREAM_DIRS=docker UPSTREAM_REPO="--branch v3.13.2 $(UPSTREAM_REPO) gdal-3132" gdal-3132
@@ -37,10 +42,12 @@ SLIM_3132_ARGS = IMAGE_BUILD_DIR=gdal-3132/docker \
              DOCKER_ARGS="--release --gdal v3.13.2 --proj 9.8.1"
 
 # Add NETCDF support to small image since Sentinel-3 requires that.
+# WARNING: this triggers build of the opendatacube images.
 build-slim-3132-image:
 	$(Q)perl -p -i -e 's#sqlite3 bash-completion#sqlite3 libnetcdf-dev\$$\{APT_ARCH_SUFFIX\} libnetcdf-c\+\+4-1 netcdf-bin bash-completion#' gdal-3132/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#libxerces-c3.2 #libxerces-c3.2 libaec0 libnetcdf-c\+\+4-1 netcdf-bin #' gdal-3132/docker/ubuntu-small/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV_PREFIX=ubuntu-small IMAGE_REV=3.13.2 $(SLIM_3132_ARGS) build-gdal-upstream-image
+	$(Q)$(MAKE) -C ../opendatacube build-images
 
 .PHONY: build-images \
   build-3130-image build-3130-image-internal build-slim-3130-image \

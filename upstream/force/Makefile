@@ -11,12 +11,6 @@ NO_SPARSE = true
 
 include ../../common/Makefile
 
-# FIXME: this depends on GDAL, but the Makefile structure does not handle
-#        having both this and opendatacube depend on GDAL without rebuilding
-#        GDAL multiple times.
-#
-#        Building GDAL takes a long time, so make do with getting last night's
-#        GDAL for now.
 build-images: build-31005-image
 
 GDAL_CURRENT_VERSION = 3.13.0
