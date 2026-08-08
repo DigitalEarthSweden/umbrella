@@ -18,7 +18,7 @@ error() {
 
 if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
   [ -n "$GITHUB_PR_BASE_REF" ] || error "No GITHUB_PR_BASE_REF defined"
-  git fetch origin "$GITHUB_PR_BASE_REF"
+  git fetch -q origin "$GITHUB_PR_BASE_REF"
   all_files=$(git diff --name-only "$ORIGIN_NAME/$GITHUB_PR_BASE_REF" HEAD)
 elif [ "$GITHUB_EVENT_NAME" = "push" ]; then
   [ -n "$GITHUB_EVENT_AFTER" ] || error "No GITHUB_EVENT_AFTER defined"
@@ -29,7 +29,12 @@ declare -a PKGS
 # Rebuild everything on CI changes and schedule/manual trigger.
 if [[ $all_files =~ $ALL_PATTERN ]] || [ "$GITHUB_EVENT_NAME" = "schedule" ] || [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
   for d in "$PACKAGES_DIRECTORY"/*/; do
-    PKGS+=("$d")
+    if [ -n "$SED_REPLACEMENTS" ]; then
+      d=$(echo "$d" | sed $SED_REPLACEMENTS)
+    fi
+    if [[ ! " ${PKGS[*]} " =~ " ${d} " ]]; then
+      PKGS+=("$d")
+    fi
   done
 elif [[ $all_files =~ $PACKAGES_PATTERN ]]; then
   for file in $all_files; do
@@ -37,9 +42,14 @@ elif [[ $all_files =~ $PACKAGES_PATTERN ]]; then
       PKGS1=$(echo "$file" | awk -F"/$PACKAGES_DIRECTORY/" '{print $2}' | awk -F/ '{print $1}')
     elif [[ $file =~ $PACKAGES_PATTERN ]]; then
       PKGS1=$(echo "$file" | awk -F"$PACKAGES_DIRECTORY/" '{print $2}' | awk -F/ '{print $1}')
+    else
+      continue
     fi
-    if [[ ! " ${PKGS[*]} " =~ " ${PKGS1} " ]]; then
-      PKGS+=("$PKGS1")
+    if [ -n "$SED_REPLACEMENTS" ]; then
+      PKGS1=$(echo "$PKGS1" | sed $SED_REPLACEMENTS)
+    fi
+    if [[ ! " ${PKGS[*]} " =~ " $PACKAGES_DIRECTORY/${PKGS1} " ]]; then
+      PKGS+=("$PACKAGES_DIRECTORY/$PKGS1")
     fi
   done
 fi

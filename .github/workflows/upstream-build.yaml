@@ -6,6 +6,7 @@ on:
   pull_request:
     paths: &paths
       - ".github/workflows/upstream-build.yaml"
+      - "bin/print-matrix.sh"
       - "common/Makefile"
       - "upstream/**"
   push:
@@ -23,13 +24,12 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  upstream-build:
-    name: upstream-build
+  upstream-small-build:
+    name: upstream-small-build
     environment:
       name: upstream-build
       deployment: false
-    timeout-minutes: 300
-    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
+    timeout-minutes: 10
     runs-on: ubuntu-26.04
     permissions:
       id-token: write # This is required for cosign
@@ -38,69 +38,91 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Docker Build
+        uses: ./.github/actions/docker-build
+        with:
+          build-path: upstream/ubuntu
+          ci-registry: ${{ vars.CI_REGISTRY }}
+          ci-registry-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          do-push: ${{ github.ref == 'refs/heads/main' }}
+          docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_UPSTREAM_RW }}
+          extra-repository: ${{ matrix.extra-repository }}
+          extra-repository-token: ${{ secrets.PAT_EXTRA_REPO_RO }}
+          organization-name: ${{ vars.ORGANIZATION_NAME }}
 
-      - name: Get Git commit timestamps
+  identify-upstream-jobs:
+    name: identify-upstream-jobs
+    # Build even if previous step failed, but permit cancelling the job.
+    if: success() || failure()
+    needs:
+      - upstream-small-build
+    environment:
+      name: upstream-build
+      deployment: false
+    outputs:
+      matrix: ${{ steps.set-upstream-matrix.outputs.matrix }}
+    timeout-minutes: 10
+    runs-on: ubuntu-26.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Generate Build Matrix
+        id: set-upstream-matrix
         run: |
-          TIMESTAMP=$(git log -1 --pretty=%ct .)
-          echo "TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
-
-      - name: Install cosign
-        if: github.ref == 'refs/heads/main'
-        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
-
-      - name: Configure to push
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "PUSH_CMD=docker" >> $GITHUB_ENV
-          echo "PUSH_OPTION=--push" >> $GITHUB_ENV
-          echo "COSIGN_CMD=cosign" >> $GITHUB_ENV
-
-      - name: Build buildpack-deps and Ubuntu images
-        run: |
-          set -o pipefail
-          # Unset empty commands for check in Makefile.
-          [ -n "$COSIGN_CMD" ] || unset COSIGN_CMD
-          [ -n "$PUSH_CMD" ] || unset PUSH_CMD
-          [ -n "$PUSH_OPTION" ] || unset PUSH_OPTION
-          export BUILDKIT_PROGRESS=plain
-          export Q=''
-          export DOCKER_EXTRA_UPSTREAM_ARGS="--pull --no-cache"
-          make -k -C upstream DIRS=buildpack-deps -j2 all
+          # Files/directories that trigger rebuild of everything.
+          export ALL_PATTERN="\.github\/|bin\/print-matrix\.sh|common\/Makefile|upstream\/Makefile"
+          # These are built in the previous step
+          export EXCLUDED_PATTERN="upstream\/buildpack-deps|upstream\/ubuntu"
+          # Package changes, only rebuild the specific packages.
+          export PACKAGES_PATTERN="upstream\/"
+          export PACKAGES_DIRECTORY=upstream
+          # Remap changes to force build of base-dependency.
+          export SED_REPLACEMENTS="-e s#opendatacube#gdal#g -e s#force#gdal#g -e s#postgis#postgres#g"
+          bin/print-matrix.sh >>$GITHUB_OUTPUT
         env:
           CI_REGISTRY: ${{ vars.CI_REGISTRY }}
-          CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
-          COSIGN_CMD: ${{ env.COSIGN_CMD }}
-          DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG_UPSTREAM_RW }}
+          CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_BASE_PATH }}
+          GITHUB_EVENT_AFTER: ${{ github.event.after }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
           ORGANIZATION_NAME: ${{ vars.ORGANIZATION_NAME }}
-          PUSH_CMD: ${{ env.PUSH_CMD }}
-          PUSH_OPTION: ${{ env.PUSH_OPTION }}
-          SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
 
-      - name: Build upstream images
-        # Build even if previous step failed, but permit cancelling the job.
-        if: success() || failure()
-        run: |
-          set -o pipefail
-          # Unset empty commands for check in Makefile.
-          [ -n "$COSIGN_CMD" ] || unset COSIGN_CMD
-          [ -n "$PUSH_CMD" ] || unset PUSH_CMD
-          [ -n "$PUSH_OPTION" ] || unset PUSH_OPTION
-          export BUILDKIT_PROGRESS=plain
-          export Q=''
-          export DOCKER_EXTRA_UPSTREAM_ARGS="--pull --no-cache"
-          # Independent builds, so keep going to get non-failing images updated.
-          make -k -C upstream -j2 all
-        env:
-          CI_REGISTRY: ${{ vars.CI_REGISTRY }}
-          CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
-          COSIGN_CMD: ${{ env.COSIGN_CMD }}
-          DOCKER_AUTH_CONFIG: ${{ secrets.DOCKER_AUTH_CONFIG_UPSTREAM_RW }}
-          ORGANIZATION_NAME: ${{ vars.ORGANIZATION_NAME }}
-          PUSH_CMD: ${{ env.PUSH_CMD }}
-          PUSH_OPTION: ${{ env.PUSH_OPTION }}
-          SOURCE_DATE_EPOCH: ${{ env.TIMESTAMP }}
+  build-image:
+    name: build-image
+    needs:
+      - identify-upstream-jobs
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.identify-upstream-jobs.outputs.matrix) }}
+    environment:
+      name: upstream-build
+      deployment: false
+    timeout-minutes: ${{ matrix.build-timeout }}
+    runs-on: ubuntu-26.04
+    permissions:
+      id-token: write # This is required for cosign
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Docker Build
+        uses: ./.github/actions/docker-build
+        with:
+          build-path: ${{ matrix.package }}
+          ci-registry: ${{ vars.CI_REGISTRY }}
+          ci-registry-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          do-push: ${{ github.ref == 'refs/heads/main' }}
+          docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_UPSTREAM_RW }}
+          extra-repository: ${{ matrix.extra-repository }}
+          extra-repository-token: ${{ secrets.PAT_EXTRA_REPO_RO }}
+          organization-name: ${{ vars.ORGANIZATION_NAME }}
 
   # This job requires secrets from the repository, and those aren't exposed
   # in pull requests from forks. Testing changes to this job in a pull request
@@ -109,7 +131,7 @@ jobs:
     name: upstream-transfer
     if: github.ref == 'refs/heads/main'
     needs:
-      - upstream-build
+      - build-image
     environment:
       name: upstream-build
       deployment: false

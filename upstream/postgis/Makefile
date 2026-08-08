@@ -9,7 +9,7 @@ UPSTREAM_DIRS = $(POSTGIS_18_DIR)
 
 include ../../common/Makefile
 
-build-images: $(UPSTREAM_REPO_NAME) build-postgres-image
+build-images: $(UPSTREAM_REPO_NAME)
 	$(Q)$(MAKE) build-images-internal
 
 build-images-internal: build-big-18-image
@@ -27,8 +27,5 @@ build-big-18-image:
 	$(Q)perl -pi -e 's#ca-certificates #ca-certificates pgstat pgtop #g' $(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR)/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV=$(POSTGIS_18_DIR) $(BIG_18_ARGS) build-upstream-image
 
-build-postgres-image:
-	$(Q)$(MAKE) -C ../postgres build-images
-
 .PHONY: build-images build-images-internal \
-        build-big-18-image build-postgres-image
+        build-big-18-image

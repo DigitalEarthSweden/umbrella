@@ -8,8 +8,7 @@ UPSTREAM_DIRS = ubuntu/noble ubuntu/resolute
 
 include ../../common/Makefile
 
-build-images: build-ubuntu-image
-	$(Q)$(MAKE) $(UPSTREAM_REPO_NAME)
+build-images: $(UPSTREAM_REPO_NAME)
 	$(Q)$(MAKE) build-images-internal
 
 build-images-internal: build-noble-image build-resolute-image
@@ -60,8 +59,5 @@ build-resolute-image:
 	$(Q)$(MAKE) IMAGE_REV=resolute-scm $(RESOLUTE_SCM_ARGS) build-upstream-image
 	$(Q)$(MAKE) IMAGE_REV=26.04 $(RESOLUTE_ARGS) build-upstream-image
 
-build-ubuntu-image:
-	$(Q)$(MAKE) -C ../ubuntu build-images
-
-.PHONY: build-images build-images-internal build-ubuntu-image \
+.PHONY: build-images build-images-internal \
         build-noble-image build-resolute-image
