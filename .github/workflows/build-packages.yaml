@@ -8,6 +8,7 @@ on:
       - ".dockerignore"
       - ".github/actions/docker-build/action.yaml"
       - ".github/workflows/build-packages.yaml"
+      - "bin/print-matrix.sh"
       - "common/Makefile"
       - "org-config/*/packages/**"
       - "packages/**"
@@ -44,7 +45,15 @@ jobs:
 
       - name: Generate Build Matrix
         id: set-matrix
-        run: bin/print-matrix.sh >>$GITHUB_OUTPUT
+        run: |
+          # Files/directories that trigger rebuild of everything.
+          export ALL_PATTERN="\.github\/|\.dockerignore|bin\/print-matrix\.sh|common\/Makefile"
+          # Package config changes, only rebuild the specific packages.
+          export CFG_PATTERN="\/packages\/"
+          # Package changes, only rebuild the specific packages.
+          export PACKAGES_PATTERN="packages\/"
+          export PACKAGES_DIRECTORY=packages
+          bin/print-matrix.sh >>$GITHUB_OUTPUT
         env:
           CI_REGISTRY: ${{ vars.CI_REGISTRY }}
           CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_BASE_PATH }}
