@@ -1,7 +1,3 @@
-# In August 2026, GitHub does still not have a way to require all running
-# workflows to pass before enabling the merge-button, so use this workflow to
-# wait on everything else,and put the branch-protection rules to wait for this
-# workflow.
 name: merge-gateway
 
 on:
@@ -17,17 +13,13 @@ concurrency:
 
 jobs:
   merge-gateway:
-    name: merge-gateway
-    # Timeout of longest workflow (upstream/ubuntu + upstream/gdal).
-    timeout-minutes: 85
-    runs-on: ubuntu-26.04
     permissions:
       checks: read # Required for reading the status of other workflows.
-    steps:
-      - name: Wait for all workflows
-        uses: matiasalbarello/wait-on-check-action-ts@8087812521cdb59ebc7751984b31b17209b30eeb # v1.2.0
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          check-regexp: "^.+$"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          running-workflow-name: "merge-gateway"
+    # August 2026: cannot use github.repository_owner for uses: for security
+    #              reasons.
+    uses: DigitalEarthSweden/.github/.github/workflows/merge-gateway.yaml@main
+    with:
+      # Timeout of longest workflow (upstream/ubuntu + upstream/gdal).
+      timeout: 85
+    secrets:
+      repo-token: ${{ secrets.GITHUB_TOKEN }}
