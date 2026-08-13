@@ -49,9 +49,10 @@ IMAGE_BUILD_DIR ?= $(MAKEFILE_DIR)/..
 
 COSIGN_CMD ?= true
 
+sign-image: SHELL = /bin/bash
 sign-image:
 	$(eval DIGEST := $(shell docker inspect $(IMAGE_VAR):$(IMAGE_REV) | jq -r '.[].Id'))
-	$(Q)$(COSIGN_CMD) sign --yes --recursive $(IMAGE_VAR):$(IMAGE_REV)@$(DIGEST)
+	$(Q)(r=5;while ! $(COSIGN_CMD) sign --yes --recursive $(IMAGE_VAR):$(IMAGE_REV)@$(DIGEST) ; do ((--r))||exit;sleep 15;done)
 
 ifdef LOCAL_IMAGE
 ifndef PIPELINE_TIME
