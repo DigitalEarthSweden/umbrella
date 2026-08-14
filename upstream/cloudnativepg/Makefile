@@ -27,6 +27,7 @@ build-postgres-18-image: SHELL = /bin/bash
 build-postgres-18-image: $(UPSTREAM_REPO_NAME)
 	$(Q)(cd $(UPSTREAM_REPO_NAME) && [[ "$$(grep "$(POSTGRES_18_MAJOR)\." docker-bake.hcl)" =~ "$(POSTGRES_18_VER)" ]]) || \
         (echo "Update POSTGRES_18_MAJOR" && exit 1)
+	$(Q)perl -pi -e 's#apt-get update && \\#apt-get update && apt-get upgrade -y && \\#g' $(UPSTREAM_REPO_NAME)/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV=$(POSTGRES_18_MAJOR) $(POSTGRES_18_ARGS) build-upstream-image
 
 
