@@ -13,7 +13,7 @@ include ../../common/Makefile
 
 build-images: build-postgres-18-image build-cloudnativepg-image
 
-POSTGRES_18_VER = 18.4
+POSTGRES_18_VER = 18.6
 POSTGRES_18_MAJOR = 18
 
 POSTGRES_18_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(UBUNTU_IMAGE_NAME):$(UBUNTU_VER)
