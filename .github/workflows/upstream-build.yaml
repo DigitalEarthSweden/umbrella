@@ -74,7 +74,7 @@ jobs:
         id: set-upstream-matrix
         run: |
           # Files/directories that trigger rebuild of everything.
-          export ALL_PATTERN="\.github\/|bin\/print-matrix\.sh|common\/Makefile|upstream\/Makefile"
+          export ALL_PATTERN="\.github\/|bin\/print-matrix\.sh|common\/Makefile|upstream\/Makefile|upstream\/buildpack-deps|upstream\/ubuntu"
           # These are built in the previous step
           export EXCLUDED_PATTERN="upstream\/buildpack-deps|upstream\/ubuntu"
           # Package changes, only rebuild the specific packages.
