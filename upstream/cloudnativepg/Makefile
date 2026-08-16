@@ -11,6 +11,7 @@ UBUNTU_VER = 26.04
 
 include ../../common/Makefile
 
+# Postgres-image triggers build of postgis image.
 build-images: build-postgres-18-image build-cloudnativepg-image
 
 POSTGRES_18_VER = 18.6
@@ -29,6 +30,24 @@ build-postgres-18-image: $(UPSTREAM_REPO_NAME)
         (echo "Update POSTGRES_18_MAJOR" && exit 1)
 	$(Q)perl -pi -e 's#apt-get update && \\#apt-get update && apt-get upgrade -y && \\#g' $(UPSTREAM_REPO_NAME)/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV=$(POSTGRES_18_MAJOR) $(POSTGRES_18_ARGS) build-upstream-image
+	$(Q)$(MAKE) build-postgis-image
+
+
+UPSTREAM_PLUGINS_REPO = https://github.com/cloudnative-pg/postgres-extensions-containers
+UPSTREAM_PLUGINS_REPO_NAME = postgres-extensions-containers
+
+POSTGIS_VER = 3.6.4+dfsg-2.pgdg26.04+1
+POSTGIS_MAJOR = 3
+
+PLUGINS_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-cloudnativepg-postgres:$(POSTGRES_18_MAJOR)
+PLUGINS_VER_ARGS = $(POSTGRES_18_VER_ARGS) --build-arg POSTGIS_MAJOR=$(POSTGIS_MAJOR) --build-arg EXT_VERSION=$(POSTGIS_VER)
+PLUGINS_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_PLUGINS_REPO_NAME)/postgis \
+            IMAGE_BASE_NAME=cloudnativepg-postgis \
+            DOCKER_ARGS=" $(PLUGINS_VER_ARGS) $(PLUGINS_BASE_ARG)"
+
+build-postgis-image:
+	$(Q)$(MAKE) UPSTREAM_REPO_NAME=$(UPSTREAM_PLUGINS_REPO_NAME) UPSTREAM_REPO=$(UPSTREAM_PLUGINS_REPO) $(UPSTREAM_PLUGINS_REPO_NAME)
+	$(Q)$(MAKE) IMAGE_REV=$(POSTGIS_MAJOR) $(PLUGINS_ARGS) build-upstream-image
 
 
 UPSTREAM_CLOUDNATIVEPG_REPO = https://github.com/cloudnative-pg/cloudnative-pg
@@ -52,4 +71,5 @@ build-cloudnativepg-image:
 
 .PHONY: build-images \
         build-postgres-18-image \
+        build-postgis-image \
         build-cloudnativepg-image
