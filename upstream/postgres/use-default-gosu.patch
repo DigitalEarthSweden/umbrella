@@ -1,7 +1,7 @@
-diff --git a/18/bookworm/Dockerfile b/18/bookworm/Dockerfile
+diff --git a/18/trixie/Dockerfile b/18/trixie/Dockerfile
 index 915a039..8ab03f3 100644
---- a/18/bookworm/Dockerfile
-+++ b/18/bookworm/Dockerfile
+--- a/18/trixie/Dockerfile
++++ b/18/trixie/Dockerfile
 @@ -26,29 +26,6 @@ RUN set -ex; \
  	; \
  	rm -rf /var/lib/apt/lists/*
