@@ -42,10 +42,12 @@ SLIM_3133_ARGS = IMAGE_BUILD_DIR=gdal-3133/docker \
              DOCKER_ARGS="--release --gdal v3.13.3 --proj 9.8.1"
 
 # Add NETCDF support to small image since Sentinel-3 requires that.
+# Add us_nga_egm08_25 since our DEM stitching tools require that.
 # WARNING: this triggers build of the opendatacube images.
 build-slim-3133-image:
 	$(Q)perl -p -i -e 's#sqlite3 bash-completion#sqlite3 libnetcdf-dev\$$\{APT_ARCH_SUFFIX\} libnetcdf-c\+\+4-1 netcdf-bin bash-completion#' gdal-3133/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#libxerces-c3.2 #libxerces-c3.2 libaec0 libnetcdf-c\+\+4-1 netcdf-bin #' gdal-3133/docker/ubuntu-small/Dockerfile
+	$(Q)perl -p -i -e 's#&& rm -rf proj #&& /build\$$\{PROJ_INSTALL_PREFIX\}/bin/projsync --file us_nga_egm08_25.tif --target-dir /build\$$\{PROJ_INSTALL_PREFIX\}/share/proj && rm -rf proj #' gdal-3133/docker/ubuntu-small/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV_PREFIX=ubuntu-small IMAGE_REV=3.13.3 $(SLIM_3133_ARGS) build-gdal-upstream-image
 	$(Q)$(MAKE) -C ../opendatacube build-images
 
