@@ -12,7 +12,8 @@ ARG UBUNTU_VERSION
 ARG ORGANIZATION_NAME
 LABEL org.opencontainers.image.ref.name="$ORGANIZATION_NAME-ubuntu"
 LABEL org.opencontainers.image.version=$UBUNTU_VERSION
-RUN export DEBIAN_FRONTEND=noninteractive && \
+RUN rm -f /usr/bin/pebble && rm -rf /var/lib/pebble && \
+    export DEBIAN_FRONTEND=noninteractive && \
     perl -pi -e 's#//archive\.ubuntu\.com#//mirror.bahnhof.net#g' /etc/apt/sources.list /etc/apt/sources.list.d/ubuntu.sources && \
     echo 'Acquire::Retries "10";' > /etc/apt/apt.conf.d/80-retries && \
     apt-get update && \
