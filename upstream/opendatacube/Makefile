@@ -8,9 +8,9 @@ include ../../common/Makefile
 
 build-images: build-explorer-image build-ows-image
 
-DOCKER_EXPLORER_DEPS_CONTEXT = --build-context ghcr.io/osgeo/gdal:ubuntu-small-3.13.2@sha256:49b1b7a9779340ad66e7f87ea78ea632e923867df24e68c6d17f0079220e16b3=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-gdal:ubuntu-small-3.13.3
+DOCKER_EXPLORER_DEPS_CONTEXT = --build-context ghcr.io/osgeo/gdal:ubuntu-small-3.13.3@sha256:64250faf833c06d4b21afce4c27190039ba7ab58d70f0eebc87cf77d929c0b40=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-gdal:ubuntu-small-3.13.3
 
-EXPLORER_VERSION = 3.1.10
+EXPLORER_VERSION = 3.2.0
 
 EXPLORER_ARGS = IMAGE_BASE_NAME=explorer \
             IMAGE_BUILD_DIR=datacube-explorer \
