@@ -13,7 +13,7 @@ DOCKER_EXPLORER_FROM = ghcr.io/osgeo/gdal:ubuntu-small-3.13.3@sha256:64250faf833
 DOCKER_EXPLORER_DEPS_CONTEXT = --build-context $(DOCKER_EXPLORER_FROM)=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-gdal:ubuntu-small-3.13.3
 
 # renovate: datasource=github-releases depName=opendatacube/datacube-explorer
-EXPLORER_VERSION = 3.2.0
+EXPLORER_VERSION = 3.2.1
 
 EXPLORER_ARGS = IMAGE_BASE_NAME=explorer \
             IMAGE_BUILD_DIR=datacube-explorer \
