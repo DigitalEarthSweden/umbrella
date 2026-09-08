@@ -36,11 +36,12 @@ build-postgres-18-image: $(UPSTREAM_REPO_NAME)
 UPSTREAM_PLUGINS_REPO = https://github.com/cloudnative-pg/postgres-extensions-containers
 UPSTREAM_PLUGINS_REPO_NAME = postgres-extensions-containers
 
-POSTGIS_VER = 3.6.4+dfsg-2.pgdg26.04+1
+# renovate: datasource=deb depName=postgis packageName=postgis
+POSTGIS_VERSION = 3.6.4+dfsg-2.pgdg26.04+1
 POSTGIS_MAJOR = 3
 
 PLUGINS_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-cloudnativepg-postgres:$(POSTGRES_18_MAJOR)
-PLUGINS_VER_ARGS = $(POSTGRES_18_VER_ARGS) --build-arg POSTGIS_MAJOR=$(POSTGIS_MAJOR) --build-arg EXT_VERSION=$(POSTGIS_VER)
+PLUGINS_VER_ARGS = $(POSTGRES_18_VER_ARGS) --build-arg POSTGIS_MAJOR=$(POSTGIS_MAJOR) --build-arg EXT_VERSION=$(POSTGIS_VERSION)
 PLUGINS_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_PLUGINS_REPO_NAME)/postgis \
             IMAGE_BASE_NAME=cloudnativepg-postgis \
             DOCKER_ARGS=" $(PLUGINS_VER_ARGS) $(PLUGINS_BASE_ARG)"
@@ -53,11 +54,13 @@ build-postgis-image:
 UPSTREAM_CLOUDNATIVEPG_REPO = https://github.com/cloudnative-pg/cloudnative-pg
 UPSTREAM_CLOUDNATIVEPG_REPO_NAME = cloudnative-pg
 
-# IMAGE_SHA is for the CLOUDNATIVEPG_VER, so update both at the same time.
-# IMPORTANT: Also update the UPSTREAM_IMAGES variable in the upstream-build
+# IMPORTANT: Update the UPSTREAM_IMAGES variable in the upstream-build
 #            environment when updating this version.
-CLOUDNATIVEPG_VER = 1.30.0
-CLOUDNATIVEPG_IMAGE_SHA = sha256:a2701eb97cdd2a34b1fdb2cb51987f544b706e40bec72ae7146cd8580efefebb
+# renovate: datasource=docker depName=cloudnative-pg/cloudnative-pg packageName=ghcr.io/cloudnative-pg/cloudnative-pg
+CLOUDNATIVEPG_IMAGE_VERSION = 1.30.0@sha256:a2701eb97cdd2a34b1fdb2cb51987f544b706e40bec72ae7146cd8580efefebb
+
+CLOUDNATIVEPG_VER = $(firstword $(subst @, ,$(CLOUDNATIVEPG_IMAGE_VERSION)))
+CLOUDNATIVEPG_IMAGE_SHA = $(word 2,$(subst @, ,$(CLOUDNATIVEPG_IMAGE_VERSION)))
 
 CLOUDNATIVEPG_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_CLOUDNATIVEPG_REPO_NAME)
 
