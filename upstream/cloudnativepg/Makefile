@@ -36,7 +36,7 @@ build-postgres-18-image: $(UPSTREAM_REPO_NAME)
 UPSTREAM_PLUGINS_REPO = https://github.com/cloudnative-pg/postgres-extensions-containers
 UPSTREAM_PLUGINS_REPO_NAME = postgres-extensions-containers
 
-# renovate: datasource=deb depName=postgis packageName=postgis
+# renovate: datasource=deb suite=resolute-pgdg depName=postgis packageName=postgis
 POSTGIS_VERSION = 3.6.4+dfsg-2.pgdg26.04+1
 POSTGIS_MAJOR = 3
 
