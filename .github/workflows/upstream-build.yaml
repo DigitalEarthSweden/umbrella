@@ -81,7 +81,7 @@ jobs:
           export PACKAGES_PATTERN="upstream\/"
           export PACKAGES_DIRECTORY=upstream
           # Remap changes to force build of base-dependency.
-          export SED_REPLACEMENTS="-e s#opendatacube#gdal#g -e s#force#gdal#g -e s#postgis#postgres#g"
+          export SED_REPLACEMENTS="-e s#opendatacube#gdal#g -e s#force#gdal#g -e s#postgis#postgres#g -e s#terriamap#node#g"
           bin/print-matrix.sh >>$GITHUB_OUTPUT
         env:
           CI_REGISTRY: ${{ vars.CI_REGISTRY }}
