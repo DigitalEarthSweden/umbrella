@@ -41,6 +41,7 @@ BIG_26_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_REPO_NAME)/26/trixie \
             DOCKER_ARGS="$(DOCKER_BUILDPACK_DEPS_CONTEXT)"
 
 build-big-26-image: $(UPSTREAM_REPO_NAME)
+	$(Q)cd $(UPSTREAM_REPO_NAME) && patch -p1 < ../26-trixie.patch
 	$(Q)perl -pi -e 's#&& set -ex#&& apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* && set -ex#g' $(UPSTREAM_REPO_NAME)/26/trixie/Dockerfile
 	$(Q)perl -pi -e 's#groupadd --gid 1000 node #groupmod -n node ubuntu #g' $(UPSTREAM_REPO_NAME)/26/trixie/Dockerfile
 	$(Q)perl -pi -e 's#useradd --uid 1000(.)+$$#usermod -m -d /home/node -l node ubuntu#g' $(UPSTREAM_REPO_NAME)/26/trixie/Dockerfile
@@ -51,6 +52,7 @@ SLIM_26_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_REPO_NAME)/26/trixie-slim \
             DOCKER_ARGS="$(DOCKER_SLIM_CONTEXT)"
 
 build-slim-26-image: $(UPSTREAM_REPO_NAME)
+	$(Q)cd $(UPSTREAM_REPO_NAME) && patch -p1 < ../26-trixie-slim.patch
 	$(Q)perl -pi -e 's#&& set -ex#&& apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/* && set -ex#g' $(UPSTREAM_REPO_NAME)/26/trixie-slim/Dockerfile
 	$(Q)perl -pi -e 's#groupadd --gid 1000 node #groupmod -n node ubuntu#g' $(UPSTREAM_REPO_NAME)/26/trixie-slim/Dockerfile
 	$(Q)perl -pi -e 's#useradd --uid 1000(.)+$$#usermod -m -d /home/node -l node ubuntu#g' $(UPSTREAM_REPO_NAME)/26/trixie-slim/Dockerfile
