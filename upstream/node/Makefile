@@ -35,6 +35,7 @@ build-slim-24-image: $(UPSTREAM_REPO_NAME)
 	$(Q)$(MAKE) IMAGE_REV=24-slim $(SLIM_24_ARGS) build-upstream-image
 
 build-latest-release-images: build-big-26-image build-slim-26-image
+	$(Q)$(MAKE) -C ../terriamap build-images
 
 BIG_26_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_REPO_NAME)/26/trixie \
             IMAGE_BASE_NAME=node \
