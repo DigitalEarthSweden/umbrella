@@ -1,0 +1,741 @@
+{
+  "homeCamera": {
+    "north": 72,
+    "east": 51,
+    "south": 54,
+    "west": -15
+  },
+  "catalog": [
+    {
+      "name": "Vår data",
+      "type": "wms-group",
+      "url": "https://ows.digitalearth.se/wms",
+      "excludeMembers": ["Sentinel-2 MSI Level-2A"],
+      "itemProperties": {
+        "dateFormat": "isoDate",
+        "timeFilterPropertyName": "data_available_for_dates",
+        "opacity": 1.0,
+        "tileWidth": 512,
+        "tileHeight": 512
+      }
+    },
+    {
+      "name": "Copernicus",
+      "type": "group",
+      "members": [
+        {
+          "name": "Sentinel-2 MSI Level-2A",
+          "type": "group",
+          "members": [
+            {
+              "name": "Sentinel-2 reflectance",
+              "type": "wms",
+              "url": "https://ows.digitalearth.se/wms",
+              "layers": "sentinel2_reflectance",
+              "dateFormat": "isoDate",
+              "timeFilterPropertyName": "data_available_for_dates",
+              "opacity": 1.0,
+              "tileWidth": 512,
+              "tileHeight": 512
+            },
+            {
+              "name": "Sentinel-2 before 2022",
+              "type": "wms",
+              "url": "https://ows.digitalearth.se/wms",
+              "layers": "sentinel2_reflectance2022",
+              "dateFormat": "isoDate",
+              "timeFilterPropertyName": "data_available_for_dates",
+              "opacity": 1.0,
+              "tileWidth": 512,
+              "tileHeight": 512
+            },
+            {
+              "name": "Scene classification",
+              "type": "wms",
+              "url": "https://ows.digitalearth.se/wms",
+              "layers": "scl_style",
+              "dateFormat": "isoDate",
+              "timeFilterPropertyName": "data_available_for_dates",
+              "opacity": 1.0,
+              "tileWidth": 512,
+              "tileHeight": 512
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lantmäteriet",
+      "description": "Map services from Lantmäteriet",
+      "type": "group",
+      "members": [
+        {
+          "name": "Lantmäteriet höjdmodell",
+          "type": "wms-group",
+          "url": "https://maps.lantmateriet.se/hojdmodell/wms/v1.1?service=wms",
+          "excludeMembers": [
+            "terranglutning",
+            "Terrängskuggning",
+            "terranglutning_brunton",
+            "ursprung_kvalitet",
+            "Ursprung och kvalitet"
+          ],
+          "description": "<p><b><p>Lantmäteriet WMS service</b></p> \
+            <p>Lantmäteriet höjdmodell</p>\
+            The product is based on height data from the National Land Elevation Model and visualizes the terrain in the form of slope and hillshading. \
+            <p>- Terrängskuggning: The layer contains a grayscale image produced by illuminating an elevation model with a simulated lighting source.<br>\
+            - Terränglutning, gråton: The layer contains a grayscale image, with each pixel colored according to its calculated gradient value.<br>\
+            - Terränglutning, brunton: The layer is designed to visualize areas with potential soil and rock-related stability problems, in brown and purple tones, respectively.</p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.lantmateriet.se/sv/geodata/vara-produkter/produktlista/markhojdmodell-visning/'>Markhöjdmodell Visning</a></p>\
+                  <a href='https://www.lantmateriet.se/globalassets/geodata/geodataprodukter/ny_nationell_hojdmodell_info_blad-131.pdf'>Ny nationell höjdmodell </a>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512
+          }
+        },
+        {
+          "name": "Lantmäteriet ortofoto årsvisa",
+          "type": "wms-group",
+          "url": "https://maps.lantmateriet.se/ortofoto-ar/wms/v1.2?request=GetCapabilities&version=1.1.1&service=WMS",
+          "description": "<p><b><p>Lantmäteriet WMS service</b></p> \
+            <p>Lantmäteriet ortofoto årsvisa</p>\
+            Orthophotos with a resolution of 0.5 m are available within the entire territory of Sweden bounded by the\
+            national border and the border of the maritime territory in the sea, with the exception of areas with \
+            only open water. In 2000 there was for the first time a complete national coverage of \
+            with digital orthophotos, then with 1 m resolution in b/w. Since then, several \
+            updates have been made and the whole country is now covered with orthophotos in both color and \
+            color and IR with 0.5 m resolution. As of 2019, orthophotos have a resolution of \
+            0.4 m/pixel instead of 0.5 m/pixel and can also be provided as 4-channel orthophotos.\
+            <p>Orthophotos are radiometrically processed aerial image data, which are geometrically projected onto an orthogonal map projection using an elevation model.\
+            In an orthophoto, the scale or distance between points is not affected by terrain variation, unlike an aerial image which has a central projection.</p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.lantmateriet.se/sv/geodata/vara-produkter/produktlista/ortofoto-nedladdning/'>Lantmäteriet - Ortofoto nedladdning</a></p>\
+                  <a href='https://www.lantmateriet.se/globalassets/geodata/geodataprodukter/flyg--och-satellitbilder/pb_ortofoto_nedladdn.pdf'>Lantmäteriet - Produktbeskrivning: Ortofoto Nedladdning</a>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512,
+            "rectangle": {
+              "north": 72.0992,
+              "east": 29.2857,
+              "south": 53.9061,
+              "west": 6.31918
+            }
+          }
+        },
+        {
+          "name": "Lantmäteriet ortofoto",
+          "type": "wms-group",
+          "url": "https://maps.lantmateriet.se/ortofoto/wms/v1.3?service=WMS",
+          "description": "<p><b><p>Lantmäteriet WMS service</b></p> \
+            <p>Lantmäteriet ortofoto</p>\
+            Orthophotos with a resolution of 0.5 m are available within the entire territory of Sweden bounded by the\
+            national border and the border of the maritime territory in the sea, with the exception of areas with \
+            only open water. In 2000 there was for the first time a complete national coverage of \
+            with digital orthophotos, then with 1 m resolution in b/w. Since then, several \
+            updates have been made and the whole country is now covered with orthophotos in both color and \
+            color and IR with 0.5 m resolution. As of 2019, orthophotos have a resolution of \
+            0.4 m/pixel instead of 0.5 m/pixel and can also be provided as 4-channel orthophotos.\
+            <p>Orthophotos are radiometrically processed aerial image data, which are geometrically projected onto an orthogonal map projection using an elevation model.\
+            In an orthophoto, the scale or distance between points is not affected by terrain variation, unlike an aerial image which has a central projection.</p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.lantmateriet.se/sv/geodata/vara-produkter/produktlista/ortofoto-nedladdning/'>Lantmäteriet - Ortofoto nedladdning</a></p>\
+                  <a href='https://www.lantmateriet.se/globalassets/geodata/geodataprodukter/flyg--och-satellitbilder/pb_ortofoto_nedladdn.pdf'>Lantmäteriet - Produktbeskrivning: Ortofoto Nedladdning</a>"
+            }
+          ],
+          "excludeMembers": [
+            "Ortofoto färg 0,16 m upplösning",
+            "Ortofoto färg 0,25 m upplösning",
+            "Ortofoto färg 0,4 m upplösning",
+            "Flygår Ortofoto färg 0,16 m upplösning",
+            "Flygår Ortofoto färg 0,25 m upplösning",
+            "Flygår Ortofoto färg 0,4 m upplösning",
+            "Flygår Ortofoto färg 0,5 m upplösning",
+            "Flygår Ortofoto IR 0,5 m upplösning",
+            "Bildsömmar Ortofoto färg 0,16 m upplösning",
+            "Bildsömmar Ortofoto färg 0,25 m upplösning",
+            "Bildsömmar Ortofoto färg 0,4 m upplösning",
+            "Bildsömmar Ortofoto färg 0,5 m upplösning",
+            "Bildsömmar Ortofoto IR 0,5 m upplösning"
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512
+          }
+        }
+      ]
+    },
+    {
+      "name": "SMHI",
+      "description": "Map services from SMHI",
+      "type": "group",
+      "members": [
+        {
+          "name": "Framtida medelvattenstånd",
+          "type": "wms-group",
+          "url": "https://opendata-view.smhi.se/SMHI_sealevel/wms",
+          "description": "<p><b>SMHI WMS service</b></p>\
+         <p>Framtida medelvattenstånd</p>\
+         <p>Future mean sea level in RK (Rikets Höjdsystem) 2000 and the approximate future location of the shoreline along \
+         the Swedish coast are calculated for several different scenarios the years 2050 and 2100.</p>\
+         <p>The calculations are based on projections, which the IPCC considers likely, for 3 different emission scenarios:  SSP1-2.6, SSP2-4.5 and SSP5-8.5.\
+         Three different levels are given for each scenario and decade. The three levels are the median and the 17th (low) and 83rd (high) percentiles.</p>\
+         The Intergovernmental Panel on Climate Change (IPCC) assessment report AR5 2013-2014 uses scenarios called RCPs, \"Representative Concentration Pathways\". The use of the RCPs aims to provide information on climate change at different concentrations of greenhouse gases in the atmosphere.",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.smhi.se/data/utforskaren-oppna-data/framtida-medelvattenstand-baserat-pa-data-fran-ipcc-ar6-wg-1-2021'>SMHI - Framtida medelvattenstånd</a></p>\
+            <a href='https://opendata-download.smhi.se/framtida_medelvattenstand/baserat-pa-ipcc-ar6-srocc-2019/Metodbeskrivning.pdf'>SMHI - Framtida medelvattenstånd (Rapportera PDF)</a>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512
+          },
+          "hideLegendInWorkbench": true,
+          "excludeMembers": [
+            "Blekinge_high_26_2050",
+            "Blekinge_high_26_2100",
+            "Blekinge_high_45_2050",
+            "Blekinge_high_45_2100",
+            "Blekinge_high_85_2050",
+            "Blekinge_high_85_2100",
+            "Blekinge_low_26_2050",
+            "Blekinge_low_26_2100",
+            "Blekinge_low_45_2050",
+            "Blekinge_low_45_2100",
+            "Blekinge_low_85_2050",
+            "Blekinge_low_85_2100",
+            "Blekinge_average_26_2050",
+            "Blekinge_average_26_2100",
+            "Blekinge_average_45_2050",
+            "Blekinge_average_45_2100",
+            "Blekinge_average_85_2050",
+            "Blekinge_average_85_2100",
+            "Gavleborg_high_26_2050",
+            "Gavleborg_high_26_2100",
+            "Gavleborg_high_45_2050",
+            "Gavleborg_high_45_2100",
+            "Gavleborg_high_85_2050",
+            "Gavleborg_high_85_2100",
+            "Gavleborg_low_26_2050",
+            "Gavleborg_low_26_2100",
+            "Gavleborg_low_45_2050",
+            "Gavleborg_low_45_2100",
+            "Gavleborg_low_85_2050",
+            "Gavleborg_low_85_2100",
+            "Gavleborg_average_26_2050",
+            "Gavleborg_average_26_2100",
+            "Gavleborg_average_45_2050",
+            "Gavleborg_average_45_2100",
+            "Gavleborg_average_85_2050",
+            "Gavleborg_average_85_2100",
+            "Gotland_high_26_2050",
+            "Gotland_high_26_2100",
+            "Gotland_high_45_2050",
+            "Gotland_high_45_2100",
+            "Gotland_high_85_2050",
+            "Gotland_high_85_2100",
+            "Gotland_low_26_2050",
+            "Gotland_low_26_2100",
+            "Gotland_low_45_2050",
+            "Gotland_low_45_2100",
+            "Gotland_low_85_2050",
+            "Gotland_low_85_2100",
+            "Gotland_average_26_2050",
+            "Gotland_average_26_2100",
+            "Gotland_average_45_2050",
+            "Gotland_average_45_2100",
+            "Gotland_average_85_2050",
+            "Gotland_average_85_2100",
+            "Halland_high_26_2050",
+            "Halland_high_26_2100",
+            "Halland_high_45_2050",
+            "Halland_high_45_2100",
+            "Halland_high_85_2050",
+            "Halland_high_85_2100",
+            "Halland_low_26_2050",
+            "Halland_low_26_2100",
+            "Halland_low_45_2050",
+            "Halland_low_45_2100",
+            "Halland_low_85_2050",
+            "Halland_low_85_2100",
+            "Halland_average_26_2050",
+            "Halland_average_26_2100",
+            "Halland_average_45_2050",
+            "Halland_average_45_2100",
+            "Halland_average_85_2050",
+            "Halland_average_85_2100",
+            "Kalmar_high_26_2050",
+            "Kalmar_high_26_2100",
+            "Kalmar_high_45_2050",
+            "Kalmar_high_45_2100",
+            "Kalmar_high_85_2050",
+            "Kalmar_high_85_2100",
+            "Kalmar_low_26_2050",
+            "Kalmar_low_26_2100",
+            "Kalmar_low_45_2050",
+            "Kalmar_low_45_2100",
+            "Kalmar_low_85_2050",
+            "Kalmar_low_85_2100",
+            "Kalmar_average_26_2050",
+            "Kalmar_average_26_2100",
+            "Kalmar_average_45_2050",
+            "Kalmar_average_45_2100",
+            "Kalmar_average_85_2050",
+            "Kalmar_average_85_2100",
+            "Norrbotten_high_26_2050",
+            "Norrbotten_high_26_2100",
+            "Norrbotten_high_45_2050",
+            "Norrbotten_high_45_2100",
+            "Norrbotten_high_85_2050",
+            "Norrbotten_high_85_2100",
+            "Norrbotten_low_26_2050",
+            "Norrbotten_low_26_2100",
+            "Norrbotten_low_45_2050",
+            "Norrbotten_low_45_2100",
+            "Norrbotten_low_85_2050",
+            "Norrbotten_low_85_2100",
+            "Norrbotten_average_26_2050",
+            "Norrbotten_average_26_2100",
+            "Norrbotten_average_45_2050",
+            "Norrbotten_average_45_2100",
+            "Norrbotten_average_85_2050",
+            "Norrbotten_average_85_2100",
+            "Ostergotland_high_26_2050",
+            "Ostergotland_high_26_2100",
+            "Ostergotland_high_45_2050",
+            "Ostergotland_high_45_2100",
+            "Ostergotland_high_85_2050",
+            "Ostergotland_high_85_2100",
+            "Ostergotland_low_26_2050",
+            "Ostergotland_low_26_2100",
+            "Ostergotland_low_45_2050",
+            "Ostergotland_low_45_2100",
+            "Ostergotland_low_85_2050",
+            "Ostergotland_low_85_2100",
+            "Ostergotland_average_26_2050",
+            "Ostergotland_average_26_2100",
+            "Ostergotland_average_45_2050",
+            "Ostergotland_average_45_2100",
+            "Ostergotland_average_85_2050",
+            "Ostergotland_average_85_2100",
+            "Skane_high_26_2050",
+            "Skane_high_26_2100",
+            "Skane_high_45_2050",
+            "Skane_high_45_2100",
+            "Skane_high_85_2050",
+            "Skane_high_85_2100",
+            "Skane_low_26_2050",
+            "Skane_low_26_2100",
+            "Skane_low_45_2050",
+            "Skane_low_45_2100",
+            "Skane_low_85_2050",
+            "Skane_low_85_2100",
+            "Skane_average_26_2050",
+            "Skane_average_26_2100",
+            "Skane_average_45_2050",
+            "Skane_average_45_2100",
+            "Skane_average_85_2050",
+            "Skane_average_85_2100",
+            "Sodermanland_high_26_2050",
+            "Sodermanland_high_26_2100",
+            "Sodermanland_high_45_2050",
+            "Sodermanland_high_45_2100",
+            "Sodermanland_high_85_2050",
+            "Sodermanland_high_85_2100",
+            "Sodermanland_low_26_2050",
+            "Sodermanland_low_26_2100",
+            "Sodermanland_low_45_2050",
+            "Sodermanland_low_45_2100",
+            "Sodermanland_low_85_2050",
+            "Sodermanland_low_85_2100",
+            "Sodermanland_average_26_2050",
+            "Sodermanland_average_26_2100",
+            "Sodermanland_average_45_2050",
+            "Sodermanland_average_45_2100",
+            "Sodermanland_average_85_2050",
+            "Sodermanland_average_85_2100",
+            "Stockholm_high_26_2050",
+            "Stockholm_high_26_2100",
+            "Stockholm_high_45_2050",
+            "Stockholm_high_45_2100",
+            "Stockholm_high_85_2050",
+            "Stockholm_high_85_2100",
+            "Stockholm_low_26_2050",
+            "Stockholm_low_26_2100",
+            "Stockholm_low_45_2050",
+            "Stockholm_low_45_2100",
+            "Stockholm_low_85_2050",
+            "Stockholm_low_85_2100",
+            "Stockholm_average_26_2050",
+            "Stockholm_average_26_2100",
+            "Stockholm_average_45_2050",
+            "Stockholm_average_45_2100",
+            "Stockholm_average_85_2050",
+            "Stockholm_average_85_2100",
+            "Uppsala_high_26_2050",
+            "Uppsala_high_26_2100",
+            "Uppsala_high_45_2050",
+            "Uppsala_high_45_2100",
+            "Uppsala_high_85_2050",
+            "Uppsala_high_85_2100",
+            "Uppsala_low_26_2050",
+            "Uppsala_low_26_2100",
+            "Uppsala_low_45_2050",
+            "Uppsala_low_45_2100",
+            "Uppsala_low_85_2050",
+            "Uppsala_low_85_2100",
+            "Uppsala_average_26_2050",
+            "Uppsala_average_26_2100",
+            "Uppsala_average_45_2050",
+            "Uppsala_average_45_2100",
+            "Uppsala_average_85_2050",
+            "Uppsala_average_85_2100",
+            "Vasterbotten_high_26_2050",
+            "Vasterbotten_high_26_2100",
+            "Vasterbotten_high_45_2050",
+            "Vasterbotten_high_45_2100",
+            "Vasterbotten_high_85_2050",
+            "Vasterbotten_high_85_2100",
+            "Vasterbotten_low_26_2050",
+            "Vasterbotten_low_26_2100",
+            "Vasterbotten_low_45_2050",
+            "Vasterbotten_low_45_2100",
+            "Vasterbotten_low_85_2050",
+            "Vasterbotten_low_85_2100",
+            "Vasterbotten_average_26_2050",
+            "Vasterbotten_average_26_2100",
+            "Vasterbotten_average_45_2050",
+            "Vasterbotten_average_45_2100",
+            "Vasterbotten_average_85_2050",
+            "Vasterbotten_average_85_2100",
+            "Vasternorrland_high_26_2050",
+            "Vasternorrland_high_26_2100",
+            "Vasternorrland_high_45_2050",
+            "Vasternorrland_high_45_2100",
+            "Vasternorrland_high_85_2050",
+            "Vasternorrland_high_85_2100",
+            "Vasternorrland_low_26_2050",
+            "Vasternorrland_low_26_2100",
+            "Vasternorrland_low_45_2050",
+            "Vasternorrland_low_45_2100",
+            "Vasternorrland_low_85_2050",
+            "Vasternorrland_low_85_2100",
+            "Vasternorrland_average_26_2050",
+            "Vasternorrland_average_26_2100",
+            "Vasternorrland_average_45_2050",
+            "Vasternorrland_average_45_2100",
+            "Vasternorrland_average_85_2050",
+            "Vasternorrland_average_85_2100",
+            "Vastra_Gotaland_high_26_2050",
+            "Vastra_Gotaland_high_26_2100",
+            "Vastra_Gotaland_high_45_2050",
+            "Vastra_Gotaland_high_45_2100",
+            "Vastra_Gotaland_high_85_2050",
+            "Vastra_Gotaland_high_85_2100",
+            "Vastra_Gotaland_low_26_2050",
+            "Vastra_Gotaland_low_26_2100",
+            "Vastra_Gotaland_low_45_2050",
+            "Vastra_Gotaland_low_45_2100",
+            "Vastra_Gotaland_low_85_2050",
+            "Vastra_Gotaland_low_85_2100",
+            "Vastra_Gotaland_average_26_2050",
+            "Vastra_Gotaland_average_26_2100",
+            "Vastra_Gotaland_average_45_2050",
+            "Vastra_Gotaland_average_45_2100",
+            "Vastra_Gotaland_average_85_2050",
+            "Vastra_Gotaland_average_85_2100"
+          ]
+        },
+        {
+          "name": "Vattenförekomster",
+          "type": "wms-group",
+          "url": "https://opendata-view.smhi.se/SMHI_vatten_restricted/Vattendragsvattenforekomster_2022/wms?service=wms&request=getcapabilities",
+          "description": "<p><b>SMHI WMS service</b></p>\
+         <p>Water Bodies</p>\
+         Sweden's surface water bodies under the EU Water Framework Directive (Vattendirektivet), subject to environmental quality standards. Based on SVAR 2022:1.2, with four layers (established or preliminary): rivers, lakes, coastal waters, and offshore waters.",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.smhi.se/data/sok-oppna-data-i-utforskaren/vattenforekomster-svar2022'>SMHI - Vattenförekomster</a></p>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512
+          }
+        },
+        {
+          "name": "Vattendelare",
+          "type": "wfs-group",
+          "url": "https://opendata-view.smhi.se/SMHI_vatten_RiverBasin/HY.PhysicalWaters.Catchments/wfs?service=wfs&request=getcapabilities",
+          "description": "<p><b>SMHI WFS service</b></p>\
+         <p>Vattendelare</p>\
+         A main river basin demarcates the area draining into an outlet point into the sea. Within a collaboration between Lantmäteriet and SMHI,\
+         hydrographic map products have been produced during the period 2013 - 2017, so that in March 2018 there was data for all of Sweden.",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.smhi.se/data/utforskaren-oppna-data/se-hy-huvudavrinningsomraden-vattendelare'>SMHI - Vattendelare</a></p>\
+               <a href='https://www.smhi.se/polopoly_fs/1.112081!/Tillg%C3%A4ngliga%20huvudavrinningsomr%C3%A5den_mars2018.pdf'> Tillgängliga huvudavrinningsområden i mars 2018 (PDF)</a>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "Havs- och vattenmyndigheten",
+      "description": "Map services from Havs- och vattenmyndigheten",
+      "type": "group",
+      "members": [
+        {
+          "name": "Riksintresse för yrkesfiske",
+          "type": "wms-group",
+          "url": "https://geodata.havochvatten.se/geoservices/riksintresse-for-yrkesfiske/ows",
+          "description": "<p><b>Havs- och vattenmyndigheten WMS service</b></p>\
+            <p>Riksintresse för yrkesfiske</p>\
+            Areas of national interest for commercial fishing are designated in marine areas, lakes and streams as well as for fishing ports.\
+            The Swedish Agency for Marine and Water Management provides information on areas that are of national interest for commercial fishing in accordance with the Environmental Code's provisions on national interest.\
+            <br>The areas listed as of national interest for commercial fishing together meet these criteria: \
+            <p>1. The area is home to values of great national importance<br>\
+            2. the area is needed to fulfil Sweden's international commitments, or<br>\
+            3. The area is needed to implement or maintain nationally important structures</p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.havochvatten.se/data-kartor-och-rapporter/data-och-statistik/havskatten/visa-datamangd.html#esc_entry=435&esc_context=1'>Havs- och vattenmyndigheten - Riksintresse för yrkesfiske </a></p>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512
+          }
+        },
+        {
+          "name": "Värdefulla vatten",
+          "type": "wms-group",
+          "url": "https://geodata.havochvatten.se/geoservices/vardefulla-vatten/ows",
+          "description": "<p><b>Havs- och vattenmyndigheten WMS service</b></p>\
+            <p>Värdefulla vatten</p>\
+            Geographical data describing natural and cultural values in a limnic environment. Served as a basis for prioritization in the work with protection of lakes and watercourses, \
+            restoration and remediation work, community planning and for official work in testing and supervision.",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://www.havochvatten.se/data-kartor-och-rapporter/data-och-statistik/havskatten/visa-datamangd.html#esc_entry=432&esc_context=1'> Havs- och vattenmyndigheten - Värdefulla vatten </a></p>"
+            }
+          ],
+          "itemProperties": {
+            "opacity": 1,
+            "tileWidth": 512,
+            "tileHeight": 512
+          }
+        }
+      ]
+    },
+    {
+      "name": "Naturvårdsverket NMD",
+      "type": "wms-group",
+      "url": "https://geodata.naturvardsverket.se/inspire/lc-nmd/ows?SERVICE=WMS&",
+      "description": "<p><b><p>Naturvårdsverket WMS service</b></p> \
+      National Land Cover Data/Nationella marktäckedata (NMD) is a comprehensive mapping of Sweden. The aim is to obtain basic information about the landscape and how it is changing. \
+      The mapping was carried out from 2017 to February 2019 and thereafter the data is planned to be updated every 5 years. NMD consists of a base mapping in 25 thematic classes in three hierarchical levels. \
+      The mapping is in raster format with a resolution of 10 meters and a minimum mapping unit down to 0.01 hectares.",
+      "info": [
+        {
+          "name": "More information",
+          "content": "<p><a href='https://www.naturvardsverket.se/verktyg-och-tjanster/kartor-och-karttjanster/nationella-marktackedata?_t_hit.id=Boilerplate_Episerver_Features_EpiserverFind_Models_EpiserverFindDocument/8461_sv&_t_q=nmd&_t_id=-qZAOkOpSEaROdi1oE6D6g&_t_tags=siteid:69c7ea6e-2b02-4832-8c8c-31da973f12f1,language:sv'>Naturvårdsverket - Nationella Marktäckedata</a></p>"
+        }
+      ],
+      "itemProperties": {
+        "opacity": 1,
+        "tileWidth": 512,
+        "tileHeight": 512
+      }
+    },
+    {
+      "name": "Myndigheten för civilt försvar",
+      "description": "Map services from Myndigheten för civilt försvar",
+      "type": "group",
+      "members": [
+        {
+          "name": "MCF Maxtemperatur, vektor 2017-2025",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_vektor_2017_2025/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur, vektor 2017-2025</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2017-2025",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2017_2025/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2017-2025</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2023-2025",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2023_2025/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2023-2025</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2022-2024",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2022_2024/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2022-2024</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2021-2023",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2021_2023/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2021-2023</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2020-2022",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2020_2022/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2020-2022</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2019-2021",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2019_2021/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2019-2021</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2018-2020",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2018_2020/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2018-2020</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        },
+        {
+          "name": "MCF Maxtemperatur 2017-2019",
+          "type": "wms-group",
+          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2017_2019/MapServer/WMSServer",
+          "description": "<p><b>MCF WMS service for Maxtemperatur 2017-2019</b></p>",
+          "info": [
+            {
+              "name": "More information",
+              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+            }
+          ]
+        }
+      ],
+      "itemProperties": {
+        "opacity": 1,
+        "tileWidth": 512,
+        "tileHeight": 512
+      }
+    }
+  ],
+  "viewerMode": "2d",
+  "baseMaps": {
+    "enabledBaseMaps": [
+      "topowebb",
+      "topowebb_nedtonad",
+      "basemap-natural-earth-II"
+    ],
+    "items": [
+      {
+        "item": {
+          "id": "topowebb_nedtonad",
+          "name": "Lantmäteriet, topowebb nedtonad",
+          "type": "wmts",
+          "url": "https://maps.lantmateriet.se/topowebb/v1.1/wmts?",
+          "opacity": 1.0,
+          "tileWidth": 512,
+          "tileHeight": 512,
+          "layer": "topowebb_nedtonad"
+        },
+        "image": "/images/basemaps/topowebb_nedtonad.webp"
+      },
+      {
+        "item": {
+          "id": "topowebb",
+          "name": "Lantmäteriet, topowebb",
+          "type": "wmts",
+          "url": "https://maps.lantmateriet.se/topowebb/v1.1/wmts?",
+          "opacity": 1.0,
+          "tileWidth": 512,
+          "tileHeight": 512,
+          "layer": "topowebb"
+        },
+        "image": "/images/basemaps/topowebb.webp"
+      },
+      {
+        "item": {
+          "id": "basemap-natural-earth-II"
+        },
+        "image": "/images/basemaps/natural-earth.webp"
+      }
+    ],
+    "defaultBaseMapId": "topowebb",
+    "previewBaseMapId": "topowebb"
+  }
+}
