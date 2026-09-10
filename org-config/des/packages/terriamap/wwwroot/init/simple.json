@@ -7,17 +7,28 @@
   },
   "catalog": [
     {
+      // Hand-written to avoid single folder. New products on ows.digitalearth.se must be added here.
       "name": "Vår data",
-      "type": "wms-group",
-      "url": "https://ows.digitalearth.se/wms",
-      "excludeMembers": ["Sentinel-2 MSI Level-2A"],
-      "itemProperties": {
-        "dateFormat": "isoDate",
-        "timeFilterPropertyName": "data_available_for_dates",
-        "opacity": 1.0,
-        "tileWidth": 512,
-        "tileHeight": 512
-      }
+      "type": "group",
+      "members": [
+        {
+          "name": "DES Sentinel-2 MSI L2A",
+          "type": "wms",
+          "url": "https://ows.digitalearth.se/wms",
+          "layers": "des_s2_msi_l2a",
+          "shareKeys": ["//Vår data/DES Sentinel-2 MSI L2A/des_s2_msi_l2a", "//Vår data/des_s2_msi_l2a"],
+          "dateFormat": "isoDate",
+          "timeFilterPropertyName": "data_available_for_dates",
+          "opacity": 1.0,
+          "tileWidth": 512,
+          "tileHeight": 512,
+          "description": "<p><b>Digital Earth Sweden Sentinel-2 Level 2 Analysis Ready Data Collection</b></p>\
+            <p>This product represents analysis-ready surface reflectance imagery over Sweden from the European Space Agency's Sentinel-2 mission. The imagery is captured using the Multispectral Instrument (MSI) sensor aboard Sentinel-2A, Sentinel-2B, and Sentinel-2C.</p>\
+            <p>The imagery is produced by Digital Earth Sweden (DES) using the Level 2 Processing System of FORCE (<a href='https://force-eo.readthedocs.io/en/latest/'>FORCE documentation</a>). Processing includes radiometric correction of Sentinel-2 Level 1C data and reprojection to the Swedish reference system SWEREF 99 TM.</p>\
+            <p>The resulting product consists of ten spectral bands (B02, B03, B04, B05, B06, B07, B08, B08A, B11, B12) provided at their native spatial resolutions of 10 m (B02, B03, B04, B08) and 20 m (B05, B06, B07, B08A, B11, B12). The product also contains quality assurance information (QAI), allowing per-pixel filtering to desired conditions (e.g., cloud-free) for a particular application.</p>\
+            <p>As a result, the DES Sentinel-2 MSI collection is a single, cohesive Analysis Ready Data package that allows analysis of surface reflectance data as-is, without the need for additional corrections.</p>"
+        }
+      ]
     },
     {
       "name": "Copernicus",
