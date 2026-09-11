@@ -7,7 +7,7 @@ NO_SHALLOW =
 NO_SPARSE = true
 
 # renovate: datasource=github-tags depName=terriajs/terriajs
-TERRIAJS_VERSION = 8.12.5
+TERRIAJS_VERSION = 8.13.0
 UPSTREAM_BRANCH = $(TERRIAJS_VERSION)
 
 include ../../common/Makefile
