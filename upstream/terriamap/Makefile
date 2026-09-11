@@ -6,7 +6,7 @@ NO_CHECKOUT =
 NO_SHALLOW =
 NO_SPARSE = true
 
-# FIXME: switch to 8.12.6 when that is released (Dockerfile broken now).
+# renovate: datasource=github-tags depName=terriajs/terriajs
 TERRIAJS_VERSION = 2f2b227e1
 UPSTREAM_BRANCH = $(TERRIAJS_VERSION)
 
