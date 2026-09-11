@@ -592,108 +592,108 @@
         {
           "name": "MCF Maxtemperatur, vektor 2017-2025",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_vektor_2017_2025/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_vektor_2017_2025/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur, vektor 2017-2025</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2017-2025",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2017_2025/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2017_2025/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2017-2025</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2023-2025",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2023_2025/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2023_2025/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2023-2025</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2022-2024",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2022_2024/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2022_2024/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2022-2024</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2021-2023",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2021_2023/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2021_2023/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2021-2023</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2020-2022",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2020_2022/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2020_2022/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2020-2022</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2019-2021",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2019_2021/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2019_2021/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2019-2021</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2018-2020",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2018_2020/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2018_2020/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2018-2020</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         },
         {
           "name": "MCF Maxtemperatur 2017-2019",
           "type": "wms-group",
-          "url": "https://gisapp.msb.se/arcgis/services/Varmekarteringar/Maxtemperatur_2017_2019/MapServer/WMSServer",
+          "url": "https://gis-tjanster.mcf.se/arcgis/services/Varmekarteringar/Maxtemperatur_2017_2019/MapServer/WMSServer",
           "description": "<p><b>MCF WMS service for Maxtemperatur 2017-2019</b></p>",
           "info": [
             {
               "name": "More information",
-              "content": "<p><a href='https://gisapp.msb.se/apps/varmekarteringar/om-karttjansten.html'>MCF - Värmekartering</a></p>"
+              "content": "<p><a href='https://kartor.mcf.se/varmekarteringar/'>MCF - Värmekartering</a></p>"
             }
           ]
         }
