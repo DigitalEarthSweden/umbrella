@@ -53,8 +53,8 @@ build-postgis-image:
 UPSTREAM_PGBOUNCER_REPO = https://github.com/cloudnative-pg/pgbouncer-containers
 UPSTREAM_PGBOUNCER_REPO_NAME = pgbouncer-containers
 
-# renovate: suite=resolute-pgdg depName=postgis packageName=pgbouncer
-PGBOUNCER_VERSION = 1.25.2-1.pgdg26.04+1
+# renovate: suite=resolute-pgdg depName=pgbouncer packageName=pgbouncer
+PGBOUNCER_VERSION = 1.25.1-1.pgdg26.04+1
 PGBOUNCER_MAJOR = $(firstword $(subst ., ,.$(PGBOUNCER_VERSION)))
 
 PGBOUNCER_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(UBUNTU_IMAGE_NAME):$(UBUNTU_VER)
