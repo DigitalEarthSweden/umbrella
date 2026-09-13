@@ -1,0 +1,33 @@
+name: public-env-setup
+description: "Configure the non-secret environment variables"
+
+inputs:
+  organization-name:
+    description: "Short name of organization"
+    required: true
+
+outputs:
+  outputs_json:
+    description: "All configuration variables as a single JSON string"
+    value: ${{ steps.parse.outputs.json_data }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up environment
+      id: parse
+      shell: bash
+      run: |
+        ORG_CFG=org-config/$ORG_NAME/$ORG_NAME-env-setup.sh
+        source $ORG_CFG
+        # Verify that organization names match.
+        [ "$ORG_NAME" = "$ORGANIZATION_NAME" ] || exit 1
+        JSON_STRING=$(grep -v -E '^#|^$' $ORG_CFG | \
+          perl -p -e 's/^export\s+//; s/=\s*["](.+)["]$/=\1/' | \
+          jq -n -R '[inputs | split("=") | select(length==2)] | map({key: .[0], value: .[1]}) | from_entries')
+        EOF=$(dd if=/dev/urandom bs=15 count=1 2>/dev/null | base64)
+        echo "json_data<<$EOF" >> $GITHUB_OUTPUT
+        echo "$JSON_STRING" >> $GITHUB_OUTPUT
+        echo "$EOF" >> $GITHUB_OUTPUT
+      env:
+        ORG_NAME: ${{ inputs.organization-name }}
