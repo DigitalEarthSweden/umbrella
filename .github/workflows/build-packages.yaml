@@ -36,7 +36,6 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     timeout-minutes: 10
-    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
     runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -81,7 +80,6 @@ jobs:
       name: upstream-build
       deployment: false
     timeout-minutes: ${{ matrix.build-timeout }}
-    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
     runs-on: ubuntu-26.04
     permissions:
       id-token: write # This is required for cosign
