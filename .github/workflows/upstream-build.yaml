@@ -155,7 +155,6 @@ jobs:
       name: upstream-build
       deployment: false
     timeout-minutes: 10
-    # FIXME: change to ubuntu-latest when ubuntu-latest is Ubuntu 26.04.
     runs-on: ubuntu-26.04
     # Variables/secrets in the container block are evaluated before the environment
     # variables, so these variables need to be defined at the repository level.
