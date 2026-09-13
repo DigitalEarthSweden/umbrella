@@ -10,6 +10,7 @@ on:
       - ".github/workflows/build-packages.yaml"
       - "bin/print-matrix.sh"
       - "common/Makefile"
+      - "org-config/*/*-env-setup.sh"
       - "org-config/*/packages/**"
       - "packages/**"
   push:
@@ -43,11 +44,17 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Set up environment
+        id: env-setup
+        uses: $/.github/actions/public-env-setup
+        with:
+          organization-name: ${{ vars.ORGANIZATION_NAME }}
+
       - name: Generate Build Matrix
         id: set-matrix
         run: |
           # Files/directories that trigger rebuild of everything.
-          export ALL_PATTERN="\.github\/|\.dockerignore|bin\/print-matrix\.sh|common\/Makefile"
+          export ALL_PATTERN="\.github\/|\.dockerignore|bin\/print-matrix\.sh|common\/Makefile|org-config\/$ORGANIZATION_NAME\/$ORGANIZATION_NAME-env-setup\.sh"
           # Package config changes, only rebuild the specific packages.
           export CFG_PATTERN="\/packages\/"
           # Package changes, only rebuild the specific packages.
@@ -55,13 +62,13 @@ jobs:
           export PACKAGES_DIRECTORY=packages
           bin/print-matrix.sh >>$GITHUB_OUTPUT
         env:
-          CI_REGISTRY: ${{ vars.CI_REGISTRY }}
-          CI_REGISTRY_BASE_PATH: ${{ vars.CI_REGISTRY_BASE_PATH }}
+          CI_REGISTRY: ${{ fromJSON(steps.env-setup.outputs.outputs_json).CI_REGISTRY }}
+          CI_REGISTRY_BASE_PATH: ${{ fromJSON(steps.env-setup.outputs.outputs_json).CI_REGISTRY_BASE_PATH }}
           GITHUB_EVENT_AFTER: ${{ github.event.after }}
           GITHUB_EVENT_BEFORE: ${{ github.event.before }}
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_PR_BASE_REF: ${{ github.event.pull_request.base.ref }}
-          ORGANIZATION_NAME: ${{ vars.ORGANIZATION_NAME }}
+          ORGANIZATION_NAME: ${{ fromJSON(steps.env-setup.outputs.outputs_json).ORGANIZATION_NAME }}
 
   build-image:
     name: build-image
@@ -83,15 +90,21 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set up environment
+        id: env-setup
+        uses: $/.github/actions/public-env-setup
+        with:
+          organization-name: ${{ vars.ORGANIZATION_NAME }}
+
       - name: Docker Build
         uses: ./.github/actions/docker-build
         with:
           build-path: ${{ matrix.package }}
-          ci-registry: ${{ vars.CI_REGISTRY }}
-          ci-registry-base-path: ${{ vars.CI_REGISTRY_BASE_PATH }}
-          ci-registry-upstream-base-path: ${{ vars.CI_REGISTRY_UPSTREAM_BASE_PATH }}
+          ci-registry: ${{ fromJSON(steps.env-setup.outputs.outputs_json).CI_REGISTRY }}
+          ci-registry-base-path: ${{ fromJSON(steps.env-setup.outputs.outputs_json).CI_REGISTRY_BASE_PATH }}
+          ci-registry-upstream-base-path: ${{ fromJSON(steps.env-setup.outputs.outputs_json).CI_REGISTRY_UPSTREAM_BASE_PATH }}
           do-push: ${{ github.ref == 'refs/heads/main' }}
           docker-auth-config: ${{ secrets.DOCKER_AUTH_CONFIG_RW }}
           extra-repository: ${{ matrix.extra-repository }}
           extra-repository-token: ${{ secrets.PAT_EXTRA_REPO_RO }}
-          organization-name: ${{ vars.ORGANIZATION_NAME }}
+          organization-name: ${{ fromJSON(steps.env-setup.outputs.outputs_json).ORGANIZATION_NAME }}
