@@ -30,6 +30,7 @@ build-slim-3130-image:
 	$(Q)$(MAKE) IMAGE_REV_PREFIX=ubuntu-small IMAGE_REV=3.13.0 $(SLIM_3130_ARGS) build-gdal-upstream-image
 	$(Q)$(MAKE) -C ../force build-images
 
+# FIXME: revert the commit of this FIXME when updating to 3.13.4.
 # renovate: datasource=github-releases depName=OSGeo/gdal
 GDAL_VERSION = 3.13.3
 
@@ -48,6 +49,10 @@ SLIM_LATEST_RELEASE_ARGS = IMAGE_BUILD_DIR=gdal-latest-release/docker \
 # Add us_nga_egm08_25 since our DEM stitching tools require that.
 # WARNING: this triggers build of the opendatacube images.
 build-slim-latest-release-image:
+	$(Q)cp -f gdal_3.13.3-cog-fix.patch gdal-latest-release
+	$(Q)perl -p -i -e 's#autoconf automake#autoconf patch automake#' gdal-latest-release/docker/ubuntu-small/Dockerfile
+	$(Q)perl -p -i -e 's#cd build#patch -p1 < ../gdal_3.13.3-cog-fix.patch && cd build#' gdal-latest-release/docker/ubuntu-small/Dockerfile
+	$(Q)perl -p -i -e 's#ARG WITH_CCACHE#ARG WITH_CCACHE\nCOPY --link gdal_3.13.3-cog-fix.patch ./#' gdal-latest-release/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#sqlite3 bash-completion#sqlite3 libnetcdf-dev\$$\{APT_ARCH_SUFFIX\} libnetcdf-c\+\+4-1 netcdf-bin bash-completion#' gdal-latest-release/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#libxerces-c3.2 #libxerces-c3.2 libaec0 libnetcdf-c\+\+4-1 netcdf-bin #' gdal-latest-release/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#&& rm -rf proj #&& /build\$$\{PROJ_INSTALL_PREFIX\}/bin/projsync --file us_nga_egm08_25.tif --target-dir /build\$$\{PROJ_INSTALL_PREFIX\}/share/proj && rm -rf proj #' gdal-latest-release/docker/ubuntu-small/Dockerfile

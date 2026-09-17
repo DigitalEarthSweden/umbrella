@@ -1,0 +1,12 @@
+diff --git a/frmts/gtiff/cogdriver.cpp b/frmts/gtiff/cogdriver.cpp
+index 1e90119853..03c96aebad 100644
+--- a/frmts/gtiff/cogdriver.cpp
++++ b/frmts/gtiff/cogdriver.cpp
+@@ -1429,6 +1429,7 @@ class COGProxyRasterBand final : public GDALProxyRasterBand
+     explicit COGProxyRasterBand(GDALRasterBand *poUnderlyingRasterBand)
+         : m_poUnderlyingBand(poUnderlyingRasterBand)
+     {
++        eDataType = poUnderlyingRasterBand->GetRasterDataType();
+         poUnderlyingRasterBand->GetBlockSize(&nBlockXSize, &nBlockYSize);
+     }
+ 
