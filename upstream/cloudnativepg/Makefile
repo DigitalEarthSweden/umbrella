@@ -12,7 +12,7 @@ UBUNTU_VER = 26.04
 include ../../common/Makefile
 
 # Postgres-image triggers build of postgis image.
-build-images: build-postgres-18-image build-pgbouncer-image build-cloudnativepg-image
+build-images: build-postgres-18-image build-pgbouncer-image build-pgnodemx-image build-cloudnativepg-image
 
 POSTGRES_18_VER = 18.6
 POSTGRES_18_MAJOR = $(firstword $(subst ., ,$(POSTGRES_18_VER)))
@@ -68,6 +68,22 @@ build-pgbouncer-image:
 	$(Q)$(MAKE) UPSTREAM_REPO_NAME=$(UPSTREAM_PGBOUNCER_REPO_NAME) UPSTREAM_REPO=$(UPSTREAM_PGBOUNCER_REPO) $(UPSTREAM_PGBOUNCER_REPO_NAME)
 	$(Q)$(MAKE) IMAGE_REV=$(PGBOUNCER_MAJOR) $(PGBOUNCER_ARGS) build-upstream-image
 
+
+# renovate: suite=resolute-pgdg depName=pgnodemx packageName=pgnodemx
+PGNODEMX_VERSION = 2.0.0-1.pgdg26.04+1
+PGNODEMX_MAJOR = $(firstword $(subst ., ,.$(PGNODEMX_VERSION)))
+
+PGNODEMX_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(UBUNTU_IMAGE_NAME):$(UBUNTU_VER)
+PGNODEMX_VER_ARGS = --build-arg PGNODEMX_VERSION=$(PGNODEMX_VERSION)
+
+PGNODEMX_ARGS = IMAGE_BUILD_DIR=. \
+            IMAGE_BASE_NAME=cloudnativepg-pgnodemx \
+            DOCKER_ARGS=" $(POSTGRES_18_VER_ARGS) $(PGNODEMX_VER_ARGS) $(PGNODEMX_BASE_ARG)"
+
+build-pgnodemx-image:
+	$(Q)$(MAKE) LOCAL=1 IMAGE_REV=$(PGNODEMX_MAJOR) $(PGNODEMX_ARGS) build-upstream-image
+
+
 UPSTREAM_CLOUDNATIVEPG_REPO = https://github.com/cloudnative-pg/cloudnative-pg
 UPSTREAM_CLOUDNATIVEPG_REPO_NAME = cloudnative-pg
 
@@ -91,6 +107,7 @@ build-cloudnativepg-image:
 
 .PHONY: build-images \
         build-pgbouncer-image \
+        build-pgnodemx-image \
         build-postgres-18-image \
         build-postgis-image \
         build-cloudnativepg-image
