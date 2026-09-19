@@ -70,7 +70,7 @@ build-pgbouncer-image:
 
 
 # renovate: suite=resolute-pgdg depName=postgresql-18-pgnodemx packageName=postgresql-18-pgnodemx
-PGNODEMX_VERSION = 2.0.0-1.pgdg26.04+1
+PGNODEMX_VERSION = 2.0.1-1.pgdg26.04+1
 PGNODEMX_MAJOR = $(firstword $(subst ., ,.$(PGNODEMX_VERSION)))
 
 PGNODEMX_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(UBUNTU_IMAGE_NAME):$(UBUNTU_VER)
