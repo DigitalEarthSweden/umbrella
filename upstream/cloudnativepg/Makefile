@@ -69,7 +69,7 @@ build-pgbouncer-image:
 	$(Q)$(MAKE) IMAGE_REV=$(PGBOUNCER_MAJOR) $(PGBOUNCER_ARGS) build-upstream-image
 
 
-# renovate: suite=resolute-pgdg depName=pgnodemx packageName=pgnodemx
+# renovate: suite=resolute-pgdg depName=postgresql-18-pgnodemx packageName=postgresql-18-pgnodemx
 PGNODEMX_VERSION = 2.0.0-1.pgdg26.04+1
 PGNODEMX_MAJOR = $(firstword $(subst ., ,.$(PGNODEMX_VERSION)))
 
