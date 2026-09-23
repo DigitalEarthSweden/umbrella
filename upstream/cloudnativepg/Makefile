@@ -90,7 +90,7 @@ UPSTREAM_CLOUDNATIVEPG_REPO_NAME = cloudnative-pg
 # IMPORTANT: Update the UPSTREAM_IMAGES variable in the upstream-build
 #            environment when updating this version.
 # renovate: datasource=docker depName=cloudnative-pg/cloudnative-pg packageName=ghcr.io/cloudnative-pg/cloudnative-pg
-CLOUDNATIVEPG_IMAGE_VERSION = 1.30.0@sha256:a2701eb97cdd2a34b1fdb2cb51987f544b706e40bec72ae7146cd8580efefebb
+CLOUDNATIVEPG_IMAGE_VERSION = 1.30.1@sha256:923c267ec29636db3bee20f993d0ec4973fa22998e1adad37da79e4d32b5bc07
 
 CLOUDNATIVEPG_VER = $(firstword $(subst @, ,$(CLOUDNATIVEPG_IMAGE_VERSION)))
 CLOUDNATIVEPG_IMAGE_SHA = $(word 2,$(subst @, ,$(CLOUDNATIVEPG_IMAGE_VERSION)))
