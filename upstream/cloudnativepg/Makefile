@@ -87,8 +87,8 @@ build-pgnodemx-image:
 UPSTREAM_CLOUDNATIVEPG_REPO = https://github.com/cloudnative-pg/cloudnative-pg
 UPSTREAM_CLOUDNATIVEPG_REPO_NAME = cloudnative-pg
 
-# IMPORTANT: Update the UPSTREAM_IMAGES variable in the upstream-build
-#            environment when updating this version.
+# IMPORTANT: Update the UPSTREAM_IMAGES variable in the *-env-setup.sh in
+#            the org-config directory after updating this version.
 # renovate: datasource=docker depName=cloudnative-pg/cloudnative-pg packageName=ghcr.io/cloudnative-pg/cloudnative-pg
 CLOUDNATIVEPG_IMAGE_VERSION = 1.30.1@sha256:923c267ec29636db3bee20f993d0ec4973fa22998e1adad37da79e4d32b5bc07
 
