@@ -27,7 +27,7 @@ build-explorer-image:
 	$(Q)$(MAKE) IMAGE_REV=$(EXPLORER_VERSION) $(EXPLORER_ARGS) build-upstream-image
 
 # The part between "FROM" and "AS" in datacube-ows/Dockerfile.
-DOCKER_OWS_FROM = ghcr.io/osgeo/gdal:ubuntu-small-3.13.1@sha256:836d1646ff9ab30d7db947c7b9690de55f34c2fd7cc5af6086a0854ccb378f59
+DOCKER_OWS_FROM = ghcr.io/osgeo/gdal:ubuntu-small-3.13.3@sha256:64250faf833c06d4b21afce4c27190039ba7ab58d70f0eebc87cf77d929c0b40
 DOCKER_OWS_DEPS_CONTEXT = --build-context $(DOCKER_OWS_FROM)=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-gdal:ubuntu-small-3.13.3
 
 # renovate: datasource=github-releases depName=opendatacube/datacube-ows
