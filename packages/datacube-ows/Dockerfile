@@ -26,7 +26,8 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     apt-get -qq update && \
     apt-get -qq -y --no-install-recommends install patch > /dev/null && \
     cd /app/lib/python3.14/site-packages && \
-    patch -p1 < /root/numpy_log_errors.patch && \
+    # FIXME: disabled for OWS 1.9.16 because Affine 3 emits warnings.
+    # patch -p1 < /root/numpy_log_errors.patch && \
     rm /root/numpy_log_errors.patch && \
     apt-get purge -y patch
 
