@@ -1,0 +1,20 @@
+diff --git a/cubedash/_model.py b/cubedash/_model.py
+index 3c4c1792..e68b606b 100644
+--- a/cubedash/_model.py
++++ b/cubedash/_model.py
+@@ -197,8 +197,13 @@ def create_app(test_config=None) -> flask.Flask:
+ 
+ 
+ def basemap_is_raster(url: str) -> bool:
+-    """Basemap URL is raster if it contains x, y and z placeholders."""
+-    return all(placeholder in url for placeholder in ("{x}", "{y}", "{z}"))
++    """
++    Basemap URL is raster if it contains x, y and z placeholders.
++
++    Leaflet's ``{-y}`` (inverted y, for TMS-ordered tile services) counts as a
++    y placeholder.
++    """
++    return "{x}" in url and "{z}" in url and ("{y}" in url or "{-y}" in url)
+ 
+ 
+ _LOG = structlog.stdlib.get_logger()

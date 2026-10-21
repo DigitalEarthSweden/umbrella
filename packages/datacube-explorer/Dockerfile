@@ -13,5 +13,18 @@ FROM $BASE_IMAGE
 # Permit colon in bucket names (some verisons of Ceph permits this).
 RUN sed -i '/^VALID_BUCKET/c\VALID_BUCKET = re.compile(r"^[a-zA-Z0-9.\\-_:]{1,255}$")' /app/lib/python3.*/site-packages/botocore/handlers.py
 
+# Local patches until the fixes are released upstream.
+COPY --link packages/datacube-explorer/explorer-basemap-inverted-y.patch /root/
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    export DEBIAN_FRONTEND=noninteractive && \
+    apt-get -qq update && \
+    apt-get -qq -y --no-install-recommends install patch > /dev/null && \
+    cd /app/lib/python3.14/site-packages && \
+    patch -p1 < /root/explorer-basemap-inverted-y.patch && \
+    rm /root/explorer-*.patch && \
+    apt-get purge -y patch
+
 ARG CONFIG_DIR
 COPY --link $CONFIG_DIR/packages/datacube-explorer/settings.env.py /app/lib/python3.14/site-packages/settings.env.py
