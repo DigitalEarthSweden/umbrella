@@ -25,6 +25,7 @@ SLIM_3130_ARGS = IMAGE_BUILD_DIR=gdal-3130/docker \
 # Add NETCDF support to small image since Sentinel-3 requires that.
 # WARNING: this triggers build of the FORCE image.
 build-slim-3130-image:
+	$(Q)perl -pi -e 's#RUN ldconfig#RUN rm -f /usr/bin/pebble && rm -rf /var/lib/pebble && ldconfig#g' gdal-3130/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#sqlite3 bash-completion#sqlite3 libnetcdf-dev\$$\{APT_ARCH_SUFFIX\} libnetcdf-c\+\+4-1 netcdf-bin bash-completion#' gdal-3130/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#libxerces-c3.2 #libxerces-c3.2 libaec0 libnetcdf-c\+\+4-1 netcdf-bin #' gdal-3130/docker/ubuntu-small/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV_PREFIX=ubuntu-small IMAGE_REV=3.13.0 $(SLIM_3130_ARGS) build-gdal-upstream-image
@@ -50,6 +51,7 @@ SLIM_LATEST_RELEASE_ARGS = IMAGE_BUILD_DIR=gdal-latest-release/docker \
 # WARNING: this triggers build of the opendatacube images.
 build-slim-latest-release-image:
 	$(Q)cp -f gdal_3.13.3-cog-fix.patch gdal-latest-release
+	$(Q)perl -pi -e 's#RUN ldconfig#RUN rm -f /usr/bin/pebble && rm -rf /var/lib/pebble && ldconfig#g' gdal-latest-release/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#autoconf automake#autoconf patch automake#' gdal-latest-release/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#cd build#patch -p1 < ../gdal_3.13.3-cog-fix.patch && cd build#' gdal-latest-release/docker/ubuntu-small/Dockerfile
 	$(Q)perl -p -i -e 's#ARG WITH_CCACHE#ARG WITH_CCACHE\nCOPY --link gdal_3.13.3-cog-fix.patch ./#' gdal-latest-release/docker/ubuntu-small/Dockerfile
