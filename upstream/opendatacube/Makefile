@@ -31,7 +31,7 @@ DOCKER_OWS_FROM = ghcr.io/osgeo/gdal:ubuntu-small-3.13.3@sha256:64250faf833c06d4
 DOCKER_OWS_DEPS_CONTEXT = --build-context $(DOCKER_OWS_FROM)=docker-image://$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-gdal:ubuntu-small-3.13.3
 
 # renovate: datasource=github-releases depName=opendatacube/datacube-ows
-OWS_VERSION = 1.9.16
+OWS_VERSION = 1.9.18
 
 OWS_ARGS = IMAGE_BASE_NAME=datacube-ows \
             IMAGE_BUILD_DIR=datacube-ows \
