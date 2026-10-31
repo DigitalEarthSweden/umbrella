@@ -95,7 +95,7 @@ jobs:
           organization-name: ${{ vars.ORGANIZATION_NAME }}
 
       - name: Docker Build
-        uses: ./.github/actions/docker-build
+        uses: $/.github/actions/docker-build
         with:
           build-path: ${{ matrix.package }}
           ci-registry: ${{ fromJSON(steps.env-setup.outputs.outputs_json).CI_REGISTRY }}
