@@ -36,7 +36,7 @@ UPSTREAM_PLUGINS_REPO = https://github.com/cloudnative-pg/postgres-extensions-co
 UPSTREAM_PLUGINS_REPO_NAME = postgres-extensions-containers
 
 # renovate: suite=resolute-pgdg depName=postgis packageName=postgis
-POSTGIS_VERSION = 3.6.4+dfsg-2.pgdg26.04+1
+POSTGIS_VERSION = 3.7.0+dfsg-1.pgdg26.04+1
 POSTGIS_MAJOR = $(firstword $(subst ., ,$(POSTGIS_VERSION)))
 
 PLUGINS_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(ORGANIZATION_NAME)-cloudnativepg-postgres:$(POSTGRES_18_MAJOR)
