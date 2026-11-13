@@ -14,7 +14,7 @@ include ../../common/Makefile
 # Postgres-image triggers build of postgis image.
 build-images: build-postgres-18-image build-pgbouncer-image build-pgnodemx-image build-cloudnativepg-image
 
-POSTGRES_18_VER = 18.6
+POSTGRES_18_VER = 18.7
 POSTGRES_18_MAJOR = $(firstword $(subst ., ,$(POSTGRES_18_VER)))
 
 POSTGRES_18_BASE_ARG = --build-arg BASE=$(CI_REGISTRY)/$(CI_REGISTRY_BASE_PATH)/$(UBUNTU_IMAGE_NAME):$(UBUNTU_VER)
