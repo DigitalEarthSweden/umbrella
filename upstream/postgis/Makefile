@@ -22,7 +22,7 @@ BIG_18_ARGS = IMAGE_BUILD_DIR=$(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR) \
 
 build-big-18-image:
 	$(Q)perl -pi -e 's#apt-get update #apt-get update && apt-get -y upgrade#g' $(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR)/Dockerfile
-	$(Q)perl -pi -e 's#\.pgdg13\+1#\.pgdg24\.04\+1#g' $(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR)/Dockerfile
+	$(Q)perl -pi -e 's#\.pgdg13\+([0-9]+)#\.pgdg24\.04\+\1#g' $(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR)/Dockerfile
 	$(Q)perl -pi -e 's#POSTGIS_VERSION=([0-9]+)\.([0-9\-]+)\.([0-9]+)\+dfsg-([0-9]+)#POSTGIS_VERSION=\1\.\2\.\3\+dfsg-\4#g' $(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR)/Dockerfile
 	$(Q)perl -pi -e 's#ca-certificates #ca-certificates pgstat pgtop #g' $(UPSTREAM_REPO_NAME)/$(POSTGIS_18_DIR)/Dockerfile
 	$(Q)$(MAKE) IMAGE_REV=$(POSTGIS_18_DIR) $(BIG_18_ARGS) build-upstream-image
