@@ -45,6 +45,10 @@
     {
       "include": "/config/layers/sentinel2.json",
       "type": "json"
+    },
+    {
+      "include": "/config/layers/des_s3_slstr_l2lst.json",
+      "type": "json"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "title": "DES Sentinel-3 SLSTR Land Surface Temperature",
+  "abstract": "Sentinel-3 SLSTR Level-2 Land Surface Temperature, reprojected onto the national 100 km SWEREF 99 TM tile grid at 1 km resolution",
+  "product_name": "des_s3_slstr_l2lst",
+  "layers": [
+    {
+      "include": "/config/layers/des_s3_slstr_l2lst/lst.json",
+      "type": "json"
+    }
+  ]
+}

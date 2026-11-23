@@ -1,0 +1,126 @@
+{
+  "default_style": "lst",
+  "styles": [
+    {
+      "name": "lst",
+      "title": "Land Surface Temperature (K)",
+      "abstract": "Daytime Land Surface Temperature in Kelvin, cloudy pixels masked out. LST is stored as scaled int16 (raw * 0.002 + 290).",
+      "index_expression": "LST * 0.002 + 290",
+      "mpl_ramp": "RdYlBu_r",
+      "range": [
+        230,
+        320
+      ],
+      "pq_masks": [
+        {
+          "band": "confidence_in",
+          "flags": {
+            "day": true
+          }
+        },
+        {
+          "band": "confidence_in",
+          "flags": {
+            "summary_cloud": false
+          }
+        }
+      ],
+      "legend": {
+        "title": "Land Surface Temperature",
+        "units": "K",
+        "begin": "230",
+        "end": "320",
+        "ticks_every": "10",
+        "decimal_places": 0
+      }
+    },
+    {
+      "name": "lst_uncertainty",
+      "title": "LST uncertainty (K)",
+      "abstract": "Estimated total uncertainty of the daytime Land Surface Temperature in Kelvin, cloudy pixels masked out. Stored as scaled int16 (raw * 0.002).",
+      "index_expression": "LST_uncertainty * 0.002",
+      "mpl_ramp": "YlOrRd",
+      "range": [
+        0,
+        2
+      ],
+      "pq_masks": [
+        {
+          "band": "confidence_in",
+          "flags": {
+            "day": true
+          }
+        },
+        {
+          "band": "confidence_in",
+          "flags": {
+            "summary_cloud": false
+          }
+        }
+      ],
+      "legend": {
+        "title": "LST uncertainty",
+        "units": "K",
+        "begin": "0",
+        "end": "2",
+        "ticks_every": "0.5",
+        "decimal_places": 1
+      }
+    },
+    {
+      "name": "cloud",
+      "title": "Cloud, snow and surface type",
+      "abstract": "Daytime pixel classification from the confidence_in flags. Shows which pixels the LST styles mask out as cloud.",
+      "needed_bands": [
+        "confidence_in"
+      ],
+      "pq_masks": [
+        {
+          "band": "confidence_in",
+          "flags": {
+            "day": true
+          }
+        }
+      ],
+      "value_map": {
+        "confidence_in": [
+          {
+            "title": "Cloud",
+            "abstract": "summary_cloud flag set",
+            "flags": {
+              "summary_cloud": true
+            },
+            "color": "#f0f0f0"
+          },
+          {
+            "title": "Snow",
+            "abstract": "Clear, snow flag set",
+            "flags": {
+              "snow": true
+            },
+            "color": "#66ccff"
+          },
+          {
+            "title": "Water",
+            "abstract": "Clear, ocean or inland water",
+            "flags": {
+              "or": {
+                "ocean": true,
+                "inland_water": true
+              }
+            },
+            "color": "#1f4e79"
+          },
+          {
+            "title": "Land",
+            "abstract": "Clear land",
+            "flags": {
+              "land": true
+            },
+            "color": "#8c6d31"
+          }
+        ]
+      }
+    }
+  ]
+}
