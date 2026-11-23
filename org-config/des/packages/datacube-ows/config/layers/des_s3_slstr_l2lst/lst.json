@@ -1,0 +1,28 @@
+{
+  "name": "des_s3_slstr_l2lst",
+  "title": "Sentinel-3 SLSTR Land Surface Temperature (daytime)",
+  "abstract": "Daytime Land Surface Temperature in Kelvin from Sentinel-3 SLSTR Level-2 LST (SL_2_LST), on the SWEREF 99 TM tile grid at 1 km. Night-time overpasses and cloudy pixels are masked out using the confidence_in flags.",
+  "product_name": "des_s3_slstr_l2lst",
+  "time_resolution": "solar",
+  "bands": {
+    "LST": [],
+    "LST_uncertainty": [],
+    "confidence_in": []
+  },
+  "native_crs": "EPSG:3006",
+  "flags": [
+    {
+      "band": "confidence_in",
+      "ignore_info_flags": [],
+      "manual_merge": false
+    }
+  ],
+  "image_processing": {
+    "extent_mask_func": "datacube_ows.ogc_utils.mask_by_val",
+    "always_fetch_bands": []
+  },
+  "styling": {
+    "include": "/config/styles/des_s3_slstr_l2lst/lst.json",
+    "type": "json"
+  }
+}
