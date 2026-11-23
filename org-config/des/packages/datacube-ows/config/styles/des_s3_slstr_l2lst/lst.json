@@ -70,10 +70,7 @@
     {
       "name": "cloud",
       "title": "Cloud, snow and surface type",
-      "abstract": "Daytime pixel classification from the confidence_in flags. Shows which pixels the LST styles mask out as cloud.",
-      "needed_bands": [
-        "confidence_in"
-      ],
+      "abstract": "Daytime pixel classification from the confidence_in flags of the overpass that supplies each LST pixel. Shows which pixels the LST styles mask out as cloud. Only pixels with an LST value are shown.",
       "pq_masks": [
         {
           "band": "confidence_in",
@@ -118,6 +115,17 @@
               "land": true
             },
             "color": "#8c6d31"
+          }
+        ],
+        "LST": [
+          {
+            "title": "",
+            "abstract": "Loads LST so only pixels with an LST value are shown; never matches.",
+            "values": [
+              -32768
+            ],
+            "color": "#000000",
+            "alpha": 0.0
           }
         ]
       }
