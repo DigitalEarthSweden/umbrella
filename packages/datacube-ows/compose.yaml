@@ -1,0 +1,79 @@
+# Local datacube-ows for testing configuration changes against a throwaway
+# Open Data Cube index. See README.md in this directory for usage.
+#
+# Required environment:
+#   OWS_DATA_DIR      Host directory with the STAC items (and COGs) to index.
+#                     Mounted read-only at the same absolute path, because the
+#                     STAC asset hrefs are relative to the item's location.
+#   OWS_PRODUCTS_DIR  Host directory with the ODC product definitions
+#                     (ssdl-core: toolbox/docker/files/products).
+
+name: datacube-ows-local
+
+services:
+  postgis:
+    platform: linux/amd64
+    image: ${POSTGIS_IMAGE:-harbor.digitalearth.se/des-images/des-postgis:latest}
+    environment:
+      - POSTGRES_DB=datacube
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      # The index is thrown away with the container; rerun local-setup.sh.
+      - type: tmpfs
+        target: /var/lib/postgresql
+    command: -c fsync=off -c full_page_writes=off -c synchronous_commit=off
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q", "-d", "datacube", "-U", "postgres"]
+      timeout: 45s
+      interval: 5s
+      retries: 10
+
+  ows:
+    platform: linux/amd64
+    build:
+      context: ../..
+      dockerfile: packages/datacube-ows/Dockerfile
+      args:
+        # Keep in sync with the version in Makefile.
+        BASE_IMAGE: ${OWS_BASE_IMAGE:-harbor.digitalearth.se/des-upstream/des-datacube-ows:1.9.19}
+        CONFIG_DIR: org-config/des
+    environment:
+      # /config/global.json with allowed_urls pointing at localhost.
+      - DATACUBE_OWS_CFG=local_ows_cfg.ows_cfg
+      - PYTHONPATH=/local
+      - ODC_DEFAULT_INDEX_DRIVER=postgis
+      - ODC_DEFAULT_DB_URL=postgresql+psycopg://postgres:password@postgis/datacube
+      # Datasets are local files; never reach out to S3.
+      - AWS_NO_SIGN_REQUEST=YES
+      - OWS_DATA_DIR=${OWS_DATA_DIR}
+    ports:
+      - "127.0.0.1:9080:8000" # --> http://localhost:9080/wms?request=GetCapabilities
+    volumes:
+      # Mounted over the config baked into the image, so edits only need
+      # "docker compose restart ows".
+      - ../../org-config/des/packages/datacube-ows/config:/config:ro
+      - ./local-setup.sh:/local-setup.sh:ro
+      - ./local_ows_cfg.py:/local/local_ows_cfg.py:ro
+      - ${OWS_PRODUCTS_DIR:?set OWS_PRODUCTS_DIR}:/products:ro
+      - ${OWS_DATA_DIR:?set OWS_DATA_DIR}:${OWS_DATA_DIR}:ro
+    command:
+      - gunicorn
+      - -b
+      - 0.0.0.0:8000
+      - --workers=2
+      - --threads=4
+      - -k
+      - gthread
+      - --timeout
+      - "121"
+      - --log-level
+      - info
+      - --worker-tmp-dir
+      - /dev/shm
+      - --config
+      - python:datacube_ows.gunicorn_config
+      - "datacube_ows.startup_utils:create_app()"
+    depends_on:
+      postgis:
+        condition: service_healthy
