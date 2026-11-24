@@ -1,0 +1,129 @@
+{
+  "default_style": "vv",
+  "styles": [
+    {
+      "name": "vv",
+      "title": "VV backscatter (dB)",
+      "abstract": "Terrain-corrected gamma nought in VV polarisation, shown in dB from -20 to 0 dB. Values are stored in linear units.",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band_offset_log",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "vv_gamma0",
+          "scale": 1.0,
+          "offset": 0.0
+        }
+      },
+      "needed_bands": ["vv_gamma0"],
+      "mpl_ramp": "Greys_r",
+      "range": [-4.6052, 0.0],
+      "legend": {
+        "title": "VV backscatter",
+        "units": "dB",
+        "begin": "-4.6052",
+        "end": "0.0",
+        "ticks": ["-4.6052", "-3.4539", "-2.3026", "-1.1513", "0.0"],
+        "tick_labels": {
+          "-4.6052": {
+            "label": "-20"
+          },
+          "-3.4539": {
+            "label": "-15"
+          },
+          "-2.3026": {
+            "label": "-10"
+          },
+          "-1.1513": {
+            "label": "-5"
+          },
+          "0.0": {
+            "label": "0"
+          }
+        }
+      },
+      "include_in_feature_info": false
+    },
+    {
+      "name": "vh",
+      "title": "VH backscatter (dB)",
+      "abstract": "Terrain-corrected gamma nought in VH polarisation, shown in dB from -25 to 0 dB. Values are stored in linear units.",
+      "index_function": {
+        "function": "datacube_ows.band_utils.single_band_offset_log",
+        "mapped_bands": true,
+        "kwargs": {
+          "band": "vh_gamma0",
+          "scale": 1.0,
+          "offset": 0.0
+        }
+      },
+      "needed_bands": ["vh_gamma0"],
+      "mpl_ramp": "Greys_r",
+      "range": [-5.7565, 0.0],
+      "legend": {
+        "title": "VH backscatter",
+        "units": "dB",
+        "begin": "-5.7565",
+        "end": "0.0",
+        "ticks": ["-5.7565", "-4.6052", "-3.4539", "-2.3026", "-1.1513", "0.0"],
+        "tick_labels": {
+          "-5.7565": {
+            "label": "-25"
+          },
+          "-4.6052": {
+            "label": "-20"
+          },
+          "-3.4539": {
+            "label": "-15"
+          },
+          "-2.3026": {
+            "label": "-10"
+          },
+          "-1.1513": {
+            "label": "-5"
+          },
+          "0.0": {
+            "label": "0"
+          }
+        }
+      },
+      "include_in_feature_info": false
+    },
+    {
+      "name": "rgb",
+      "title": "False colour (VV, VH, VV/VH)",
+      "abstract": "False colour composite: red = VV (-20 to 0 dB), green = VH (-25 to -5 dB), blue = VV/VH ratio (1 to 20).",
+      "components": {
+        "red": {
+          "function": "datacube_ows.band_utils.single_band_offset_log",
+          "mapped_bands": true,
+          "kwargs": {
+            "band": "vv_gamma0",
+            "scale": 1.0,
+            "offset": 0.0,
+            "scale_from": [-4.6052, 0.0]
+          }
+        },
+        "green": {
+          "function": "datacube_ows.band_utils.single_band_offset_log",
+          "mapped_bands": true,
+          "kwargs": {
+            "band": "vh_gamma0",
+            "scale": 1.0,
+            "offset": 0.0,
+            "scale_from": [-5.7565, -1.1513]
+          }
+        },
+        "blue": {
+          "function": "datacube_ows.band_utils.band_quotient",
+          "mapped_bands": true,
+          "kwargs": {
+            "band1": "vv_gamma0",
+            "band2": "vh_gamma0",
+            "scale_from": [1, 20]
+          }
+        }
+      },
+      "additional_bands": ["vv_gamma0", "vh_gamma0"]
+    }
+  ]
+}

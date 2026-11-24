@@ -1,0 +1,20 @@
+{
+  "name": "des_s1_sar_rtc",
+  "title": "Sentinel-1 SAR backscatter (gamma nought, RTC)",
+  "abstract": "Terrain-corrected Sentinel-1 IW backscatter (gamma nought) in VV and VH polarisation, on the SWEREF 99 TM tile grid at 10 m. Ascending and descending overpasses of the same solar day are shown together.",
+  "product_name": "des_s1_sar_rtc",
+  "time_resolution": "solar",
+  "bands": {
+    "vv_gamma0": [],
+    "vh_gamma0": []
+  },
+  "native_crs": "EPSG:3006",
+  "image_processing": {
+    "extent_mask_func": "datacube_ows.ogc_utils.mask_by_nan",
+    "always_fetch_bands": []
+  },
+  "styling": {
+    "include": "/config/styles/des_s1_sar_rtc/rtc.json",
+    "type": "json"
+  }
+}
