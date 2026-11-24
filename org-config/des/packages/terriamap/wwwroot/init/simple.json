@@ -27,6 +27,22 @@
             <p>The imagery is produced by Digital Earth Sweden (DES) using the Level 2 Processing System of FORCE (<a href='https://force-eo.readthedocs.io/en/latest/'>FORCE documentation</a>). Processing includes radiometric correction of Sentinel-2 Level 1C data and reprojection to the Swedish reference system SWEREF 99 TM.</p>\
             <p>The resulting product consists of ten spectral bands (B02, B03, B04, B05, B06, B07, B08, B08A, B11, B12) provided at their native spatial resolutions of 10 m (B02, B03, B04, B08) and 20 m (B05, B06, B07, B08A, B11, B12). The product also contains quality assurance information (QAI), allowing per-pixel filtering to desired conditions (e.g., cloud-free) for a particular application.</p>\
             <p>As a result, the DES Sentinel-2 MSI collection is a single, cohesive Analysis Ready Data package that allows analysis of surface reflectance data as-is, without the need for additional corrections.</p>"
+        },
+        {
+          "name": "DES Sentinel-3 SLSTR L2 LST",
+          "type": "wms",
+          "url": "https://ows.digitalearth.se/wms",
+          "layers": "des_s3_slstr_l2lst",
+          "dateFormat": "isoDate",
+          "timeFilterPropertyName": "data_available_for_dates",
+          "opacity": 1.0,
+          "tileWidth": 512,
+          "tileHeight": 512,
+          "description": "<p><b>Digital Earth Sweden Sentinel-3 Level 2 Land Surface Temperature Collection</b></p>\
+            <p>This product provides land surface temperature (LST) over Sweden from the European Space Agency's Sentinel-3 mission. The data is captured by the Sea and Land Surface Temperature Radiometer (SLSTR) aboard Sentinel-3A, Sentinel-3B, and Sentinel-3C.</p>\
+            <p>Digital Earth Sweden (DES) regrids the operational Sentinel-3 SLSTR Level 2 LST product from its native swath geometry to the Swedish reference system SWEREF 99 TM at 1 km spatial resolution. Each satellite pass is split into tiles of the national 100 km grid.</p>\
+            <p>Every tile contains the land surface temperature (LST, in Kelvin) and its per-pixel uncertainty (LST_uncertainty), along with the NDVI and biome classification used in the retrieval. The product also contains quality information: the retrieval exception flags (exception) and the confidence flags (confidence_in), which include cloud, snow, and land/water information. These allow per-pixel filtering to the conditions a given application needs (e.g., cloud-free land pixels).</p>\
+            <p>As a result, the DES Sentinel-3 SLSTR LST collection is a single, cohesive, analysis-ready time series of land surface temperature over Sweden.</p>"
         }
       ]
     },
