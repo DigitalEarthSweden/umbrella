@@ -39,6 +39,10 @@
   },
   "layers": [
     {
+      "include": "/config/layers/des_s1_sar_rtc.json",
+      "type": "json"
+    },
+    {
       "include": "/config/layers/des_s2_msi_l2a.json",
       "type": "json"
     },
