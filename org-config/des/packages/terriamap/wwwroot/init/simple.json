@@ -38,6 +38,9 @@
           "opacity": 1.0,
           "tileWidth": 512,
           "tileHeight": 512,
+          "tileErrorHandlingOptions": {
+            "ignoreUnknownTileErrors": true
+          },
           "description": "<p><b>Digital Earth Sweden Sentinel-3 Level 2 Land Surface Temperature Collection</b></p>\
             <p>This product provides land surface temperature (LST) over Sweden from the European Space Agency's Sentinel-3 mission. The data is captured by the Sea and Land Surface Temperature Radiometer (SLSTR) aboard Sentinel-3A, Sentinel-3B, and Sentinel-3C.</p>\
             <p>Digital Earth Sweden (DES) regrids the operational Sentinel-3 SLSTR Level 2 LST product from its native swath geometry to the Swedish reference system SWEREF 99 TM at 1 km spatial resolution. Each satellite pass is split into tiles of the national 100 km grid.</p>\
