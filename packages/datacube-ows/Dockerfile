@@ -18,7 +18,7 @@ RUN sed -i '/^VALID_BUCKET/c\VALID_BUCKET = re.compile(r"^[a-zA-Z0-9.\\-_:]{1,25
 
 USER root
 
-COPY --link packages/datacube-ows/numpy_log_errors.patch /root/
+COPY --link packages/datacube-ows/numpy_log_errors.patch packages/datacube-ows/feature_info_nan_flags.patch /root/
 
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
@@ -28,7 +28,9 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     cd /app/lib/python3.14/site-packages && \
     # FIXME: disabled for OWS 1.9.16 because Affine 3 emits warnings.
     # patch -p1 < /root/numpy_log_errors.patch && \
-    rm /root/numpy_log_errors.patch && \
+    # GetFeatureInfo fails on NaN flag values from manual_merge layers.
+    patch -p1 < /root/feature_info_nan_flags.patch && \
+    rm /root/numpy_log_errors.patch /root/feature_info_nan_flags.patch && \
     apt-get purge -y patch
 
 USER ubuntu

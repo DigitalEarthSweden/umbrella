@@ -1,0 +1,14 @@
+--- a/datacube_ows/feature_info.py
++++ b/datacube_ows/feature_info.py
+@@ -102,6 +102,11 @@
+         band_val = pixel_dataset[k].item()
+         flag_def = pixel_dataset[k].attrs.get("flags_definition")
+         if flag_def:
++            if isinstance(band_val, float) and numpy.isnan(band_val):
++                # manual_merge masks with xarray where(), which turns flag
++                # bands into float with NaN where no dataset has data.
++                band_dict[k] = "n/a"
++                continue
+             try:
+                 flag_dict = mask_to_dict(flag_def, band_val)
+             except TypeError:
