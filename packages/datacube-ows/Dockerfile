@@ -16,6 +16,10 @@ COPY --link --chown=1000:1000 $CONFIG_DIR/packages/datacube-ows/config/ /config/
 # Permit colon in bucket names (some verisons of Ceph permits this).
 RUN sed -i '/^VALID_BUCKET/c\VALID_BUCKET = re.compile(r"^[a-zA-Z0-9.\\-_:]{1,255}$")' /app/lib/python3.*/site-packages/botocore/handlers.py
 
+# Log gunicorn's "No route to host" socket errors as one line.
+RUN --mount=type=bind,source=packages/datacube-ows/gunicorn_config.py,target=/tmp/gunicorn_config.py \
+    tee -a /app/lib/python3.*/site-packages/datacube_ows/gunicorn_config.py < /tmp/gunicorn_config.py > /dev/null
+
 USER root
 
 COPY --link packages/datacube-ows/numpy_log_errors.patch /root/
