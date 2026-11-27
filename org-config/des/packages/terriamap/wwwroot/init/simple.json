@@ -12,6 +12,25 @@
       "type": "group",
       "members": [
         {
+          "name": "DES Sentinel-1 SAR RTC",
+          "type": "wms",
+          "url": "https://ows.digitalearth.se/wms",
+          "layers": "des_s1_sar_rtc",
+          "dateFormat": "isoDate",
+          "timeFilterPropertyName": "data_available_for_dates",
+          "opacity": 1.0,
+          "tileWidth": 512,
+          "tileHeight": 512,
+          "tileErrorHandlingOptions": {
+            "ignoreUnknownTileErrors": true
+          },
+          "description": "<p><b>Digital Earth Sweden Sentinel-1Radiometric Terrain Corrected Backscatter Collection</b></p>\
+            <p>This product provides radar backscatter over Sweden from the European Space Agency's Sentinel-1 mission. The data is captured by the C-band Synthetic Aperture Radar (SAR) aboard Sentinel-1A, Sentinel-1C, and Sentinel-1D.</p>\
+            <p>Digital Earth Sweden (DES) processes Sentinel-1 Ground Range Detected (GRD) products with radiometric terrain correction, using the open-source software <a href='https://github.com/bopen/sarsen'>sarsen</a> and a Nordic digital elevation model. The corrected backscatter is regridded to the Swedish reference system SWEREF 99 TM at 10 m spatial resolution, split into tiles of the national 100 km grid.</p>\
+            <p>Each tile contains terrain-flattened backscatter (gamma nought, γ⁰) in linear power for both polarisations, VV (vv_gamma0) and VH (vh_gamma0). Topographic effects in the backscatter signal are removed by radiometric terrain correction. SAR is unaffected by clouds and daylight, so every acquisition is usable.</p>\
+            <p>As a result, the DES Sentinel-1 SAR RTC collection is a single, cohesive, analysis-ready time series of radar backscatter over Sweden.</p>"
+        },
+        {
           "name": "DES Sentinel-2 MSI L2A",
           "type": "wms",
           "url": "https://ows.digitalearth.se/wms",
