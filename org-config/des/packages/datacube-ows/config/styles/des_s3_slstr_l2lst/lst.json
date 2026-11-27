@@ -7,10 +7,7 @@
       "abstract": "Daytime Land Surface Temperature in Kelvin, cloudy pixels masked out. LST is stored as scaled int16 (raw * 0.002 + 290).",
       "index_expression": "LST * 0.002 + 290",
       "mpl_ramp": "RdYlBu_r",
-      "range": [
-        230,
-        320
-      ],
+      "range": [230, 320],
       "pq_masks": [
         {
           "band": "confidence_in",
@@ -40,10 +37,7 @@
       "abstract": "Estimated total uncertainty of the daytime Land Surface Temperature in Kelvin, cloudy pixels masked out. Stored as scaled int16 (raw * 0.002).",
       "index_expression": "LST_uncertainty * 0.002",
       "mpl_ramp": "YlOrRd",
-      "range": [
-        0,
-        2
-      ],
+      "range": [0, 2],
       "pq_masks": [
         {
           "band": "confidence_in",
@@ -121,9 +115,7 @@
           {
             "title": "",
             "abstract": "Loads LST so only pixels with an LST value are shown; never matches.",
-            "values": [
-              -32768
-            ],
+            "values": [-32768],
             "color": "#000000",
             "alpha": 0.0
           }
